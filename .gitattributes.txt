@@ -1,2 +1,2 @@
 * linguist-vendored
-*text=auto
+* text=auto
