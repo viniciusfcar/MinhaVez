@@ -1,0 +1,114 @@
+{% load static %}
+{% load bootstrap %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+        <title>MinhaVez</title>
+    </head> 
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="col text-center">
+                                <img class="img-fluid" src="{% static 'midias_minhavez/logo.png' %}" style="width: 350px; height: 100px;">
+                            </div>
+                            <p style="font-size: medium; margin-top: 5%; margin-left: 70%;">{{context.data}}</p>
+                            <div class="card-title mt-5">
+                                <h4 style="font-size: xx-large;">Detalhes da Autorização: {{ context.autorizacao.nome }}</h4>
+                            </div>
+                            <div class="table-responsive" style="margin-top: 5%;">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Responsável</th>
+                                            <th>Hora</th>
+                                            <th>Data</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <td>{{context.autorizacao.responsavel.nome}} {{context.consulta.especialista.sobrenome}}</td>
+                                        <td>{{context.autorizacao.hora}}</td>
+                                        <td>{{context.autorizacao.data |date:"d, M, Y"}}</td>
+                                        {% if context.autorizacao.status == 'INICIADA' %}
+                                            <td class="alert alert-success">{{context.autorizacao.status}}</td>
+                                        {% elif context.autorizacao.status == 'AGUARDANDO' %}
+                                            <td class="alert alert-primary">{{context.autorizacao.status}}</td>
+                                        {% else %}
+                                            <td class="alert alert-danger">{{context.autorizacao.status}}</td>
+                                        {% endif %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="card-title mt-5">
+                                <h4 style="font-size: xx-large;">Usuários</h4>
+                            </div>
+                            <div class="card-title mt-5" style="margin-top: 5%;">
+                                <h4 style="font-size: xx-large;">Fichas Normais</h4>
+                            </div>
+                            <div class="table-responsive" style="margin-top: 5%;">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Nome</th>
+                                            <th>Número da Fichas</th>
+                                            <th>Status da Ficha</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for ficha in context.fichas_normais %}
+                                            {% if ficha %}
+                                                <td>{{ficha.usuario.user.first_name}}</td>
+                                                <td>{{ficha.numero}}</td>
+                                                {% if ficha.status == 'ATENDIDA' %}
+                                                    <td class="alert alert-success">{{ficha.status}}</td>
+                                                {% elif ficha.status == 'AGUARDANDO' %}
+                                                    <td class="alert alert-primary">{{ficha.status}}</td>
+                                                {% else %}
+                                                    <td class="alert alert-danger">{{ficha.status}}</td>
+                                                {% endif %}
+                                            {% endif %}
+                                    </tbody>
+                                        {% endfor %}
+                                </table>
+                                <div class="card-title mt-5">
+                                    <h4 style="font-size: xx-large;">Fichas Preferenciais</h4>
+                                </div>
+                                <div class="table-responsive" style="margin-top: 5%;">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Nome</th>
+                                                <th>Número da Fichas</th>
+                                                <th>Status da Ficha</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for ficha in context.fichas_preferenciais %}
+                                                {% if ficha %}
+                                                    <td>{{ficha.usuario.user.first_name}}</td>
+                                                    <td>{{ficha.numero}}</td>
+                                                    {% if ficha.status == 'ATENDIDA' %}
+                                                        <td class="alert alert-success">{{ficha.status}}</td>
+                                                    {% elif ficha.status == 'AGUARDANDO' %}
+                                                        <td class="alert alert-primary">{{ficha.status}}</td>
+                                                    {% else %}
+                                                        <td class="alert alert-danger">{{ficha.status}}</td>
+                                                    {% endif %}
+                                                {% endif %}
+                                        </tbody>
+                                            {% endfor %}
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

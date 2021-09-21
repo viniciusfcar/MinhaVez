@@ -1,0 +1,95 @@
+{% extends 'base_usuario.html' %}
+{% load static %}
+
+{% block title %} MinhaVez {% endblock %}
+
+{% block corpo %}
+
+<div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-4 col-xl-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="media align-items-center mb-4">
+                            <img class="img-fluid w-50 p-3 img-circle" src="{{ usuario.imagem.url }}" alt="">
+                            <div class="media-body">
+                                <h3 class="mb-0">{{usuario.user.first_name}}</h3>
+                                <p class="text-muted mb-0">{{usuario.user.last_name}}</p>
+                            </div>
+                        </div>
+                        <ul class="card-profile__info">
+                            <li><strong class="text-dark mr-4">Email</strong> <span>{{usuario.user.email}}</span></li>
+                        </ul>
+                        <ul class="card-profile__info">
+                            <li><strong class="text-dark mr-4">Telefone</strong> <span id="telefone" name="telefone">{{usuario.telefone}}</span></li>
+                        </ul>
+                        <ul class="card-profile__info">
+                            <li><strong class="text-dark mr-4">Sexo</strong> <span>{{usuario.sexo}}</span></li>
+                        </ul>
+                        <div class="col-12 text-center">
+                            <a href="{% url 'alterarPerfil' usuario.id %}" class="btn btn-primary px-5" style="font-size: medium; margin-left: auto;">
+                                Editar<i class="far fa-edit" style="margin-left: 10px; font-size: 15px;"></i>
+                            </a>
+                            </a>
+                        </div>
+                    </div>
+                </div>  
+            </div>
+            <div class="col-lg-8 col-xl-9">
+                    <div class="card">
+                        <div class="card-body table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>CPF</th>
+                                        <th>RG</th>
+                                        <th>SUS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <td id="cpf" name="cpf">{{usuario.cpf}}</td>
+                                    <td>{{usuario.rg}}</td>
+                                    <td>{{usuario.sus}}</td>
+                                </tbody>
+                            </table>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>CEP</th>
+                                        <th>Logradouro</th>
+                                        <th>Número</th>
+                                        <th>Complemento</th>
+                                        <th>Bairro</th>
+                                        <th>Cidade</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <td>{{usuario.cep}}</td>
+                                    <td>{{usuario.logradouro}}</td>
+                                    <td>{{usuario.numero}}</td>
+                                    <td>{{usuario.complemento}}</td>
+                                    <td>{{usuario.bairro}}</td>
+                                    <td>{{usuario.cidade}}</td>
+                                    <td>{{usuario.estado}}</td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+    $(document).ready(async function(){
+
+        $('#cpf').mask("000.000.000-00");
+
+        $('#telefone').mask("(00) 00000-0000");
+
+    });
+</script>
+{% endblock %}

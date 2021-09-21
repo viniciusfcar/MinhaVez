@@ -1,0 +1,47 @@
+{% extends 'base_usuario.html' %}
+
+{% block title %} MinhaVez {% endblock %}
+
+{% block corpo %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title alert alert-info" role="alert">
+                            <div class="form-inline">
+                                <div class="form-group mx-sm-3 mb-2">
+                                    <h2 style="font-size: xx-large;">
+                                        Detalhes Especialista: {{ context.especialista.nome }} {{ context.especialista.sobrenome }}
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+                        {% if context.unidades.all %}
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Locais de Atendimento</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for unidade in context.unidades.all %}
+                                            <td>{{ unidade.razao_social }}</td>
+                                            <td>    
+                                                <a href="{% url 'detalhesUnidadeSaude' unidade.id %}" class="btn btn-primary" style="font-size: medium;">
+                                                    Detalhes<i class="fas fa-info" style="margin-left: 10px; font-size: 15px;"></i>
+                                                </a>
+                                            </td>
+                                    </tbody>
+                                        {% endfor %}
+                                </table>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

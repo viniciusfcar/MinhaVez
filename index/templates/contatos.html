@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load bootstrap %}
+
+{% block title %} MinhaVez {% endblock %}
+
+{% block logo %}<a href="{% url 'index' %}">{% endblock %}
+
+{% block i_menu_superior %}
+    <li class="icons dropdown d-none d-md-flex">
+        <span class="activity active"></span>
+        <p><a class="btn mb-1 btn-outline-primary btn-lg" href="{% url 'cadastroUsuario' %}">Cadastre-se</a></p>
+    </li>
+    <li class="icons dropdown d-none d-md-flex">
+        <span class="activity active"></span>
+        <p><a class="btn mb-1 btn-outline-success btn-lg" href="{% url 'login' %}">Login</a></p>
+    </li>
+{% endblock %}
+
+{% block i_menu_lateral %}
+     <li>
+        <a href="{% url 'quemSomos' %}" aria-expanded="false">
+            <i class="icon-badge menu-icon"></i><span class="nav-text">Quem Somos</span>
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'contatos' %}">
+            <i class="icon-envelope menu-icon"></i><span class="nav-text">Contatos</span>
+        </a>
+    </li>
+{% endblock %}
+
+{% block corpo %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-3 col-sm-6">
+                            <div class="card">
+                                <div class="social-graph-wrapper widget-facebook">
+                                    <span class="s-icon"><i class="fa fa-facebook"></i></span>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 ">
+                                        <div class="pt-3 pb-3 pl-0 pr-0 text-center">
+                                            <h5 class="m-0" style="color: gray">MinhaVez - Sistema de Filas</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6">
+                            <div class="card">
+                                <div class="social-graph-wrapper gradient-7">
+                                    <span class="s-icon"><i class="fa fa-instagram"></i></span>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="pt-3 pb-3 pl-0 pr-0 text-center">
+                                            <h4 class="m-0" style="color: gray">@minhavezsistema</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6">
+                            <div class="card">
+                                <div class="social-graph-wrapper widget-googleplus">
+                                    <span class="s-icon"><i class="fa fa-google-plus"></i></span>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="pt-3 pb-3 pl-0 pr-0 text-center">
+                                            <h4 class="m-0" style="color: gray">minhavezsistema@gmail.com</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6">
+                            <div class="card">
+                                <div class="social-graph-wrapper widget-twitter">
+                                    <span class="s-icon"><i class="fa fa-twitter"></i></span>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="pt-3 pb-3 pl-0 pr-0 text-center">
+                                            <h4 class="m-0" style="color: gray">@minhavezsistema</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

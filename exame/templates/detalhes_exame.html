@@ -1,0 +1,130 @@
+'{% extends 'base.html' %}
+
+{% block title %} MinhaVez {% endblock %}
+
+{% block corpo %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        {% if context.msg_error %}
+                            <div class="alert alert-danger" role="alert">
+                                <h4 class="alert-heading">{{ context.msg_error}}</h4>
+                                <hr>
+                                <p>Inicie a fila para poder iniciar o exame!</p>
+                            </div>
+                        {% endif %}
+                        <div class="row card-body col-md-12">
+                            {% if context.exame.agendamento %}
+                                <div class="col-md-3 p-2">
+                                    <a href="{% url 'detalhesAgendamento' context.exame.agendamento.id %}"
+                                        class="btn btn-primary">
+                                        Agendamento<i class="fas fa-file-contract" style="font-size: 20px; margin-left: 15px;"></i>
+                                    </a>
+                                </div>
+                            {% else %}
+                                <div class="col-md-3 p-2">
+                                    <a href="{% url 'cadastroAgendamentoExame' context.exame.id %}"
+                                        class="btn btn-primary" style="font-size: medium;">
+                                        Criar Agendamento<i class="fas fa-file-signature" style="font-size: 20px; margin-left: 15px;"></i>
+                                    </a>
+                                </div>
+                            {% endif %}
+                            {% if context.exame.user == user and context.exame.create_fila is False %}
+                                <div class="col-md-3 p-2">
+                                    <a href="{% url 'cadastroFilaExame' context.exame.id %}" 
+                                        class="btn btn-success" style="font-size: medium;">
+                                        Iniciar Fila<i class="fas fa-play" style="font-size: 20px; margin-left: 15px;"></i>
+                                    </a>
+                                </div>
+                            {% elif context.exame.create_fila %}
+                                <div class="form-group col-md-12">
+                                    <a href="{% url 'detalhesFila' context.fila_normal.id %}" 
+                                        class="btn btn-info col-md-4" style="font-size: medium;">
+                                        Fila Normal<i class="fas fa-restroom" style="font-size: 20px; margin-left: 15px;"></i>
+                                    </a>
+                                    <a href="{% url 'detalhesFila' context.fila_preferencial.id %}"
+                                        class="btn btn-info col-md-4" style="font-size: medium;">
+                                        Fila Preferencial<i class="fab fa-accessible-icon" style="font-size: 20px; margin-left: 15px;"></i>
+                                    </a>
+                                    {% if context.exame.user == user %}
+                                        <a href="{% url 'deleteFila' context.fila_normal.id context.fila_preferencial.id %}" 
+                                            class="btn btn-danger col-md-2" style="font-size: medium;">
+                                            <span class="nav-text" style="font-size: medium;">Excluir Fila</span><i class="far fa-times-circle" style="font-size: 20px; margin-left: 15px;"></i>
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            {% else %}
+                                <div class="alert alert-danger p-2" role="alert">
+                                    <h4 class="alert-heading">Criada por {{ context.exame.user.username }}</h4>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="card-title alert alert-info" role="alert">
+                            <div class="form-inline">
+                                <div class="form-group mx-sm-3 mb-2">
+                                    <h1 style="font-size: xx-large;">Detalhes do Exame: {{ context.exame.nome }}</h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Tipo</th>
+                                        <th>Hora</th>
+                                        <th>Data</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <td>{{context.exame.tipo}}</td>
+                                    <td>{{context.exame.hora}}</td>
+                                    <td>{{context.exame.data}}</td>
+                                    {% if context.exame.status == 'INICIADA' %}
+                                        <td class="alert alert-success">{{context.exame.status}}</td>
+                                    {% elif context.exame.status == 'AGUARDANDO' %}
+                                        <td class="alert alert-primary">{{context.exame.status}}</td>
+                                    {% else %}
+                                        <td class="alert alert-danger">{{context.exame.status}}</td>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% if context.exame.status == 'AGUARDANDO' %}
+                            <a href="{% url 'iniciarExame' context.exame.id %}" 
+                                class="btn btn-success" style="font-size: medium;">
+                                Iniciar Exame<i class="fas fa-play" style="font-size: 20px; margin-left: 15px;"></i>
+                            </a>
+                        {% elif context.exame.status == 'INICIADA' %}
+                            <div class="row form-group col-md-12">  
+                                <div class="col-md-3 p-2">
+                                    <a href="{% url 'encerrarExame' context.exame.id %}" 
+                                        class="btn btn-danger">
+                                        <span class="nav-text" style="font-size: medium;">Encerrar Exame</span><i class="far fa-times-circle" style="font-size: 20px; margin-left: 15px;"></i>
+                                    </a>
+                                </div>
+                                <div class="col-md-3 p-2">
+                                    <a href="{% url 'relatorioExame' %}" 
+                                        class="btn btn-primary" target="_new" style="font-size: medium;">
+                                        Relatório<i class="fas fa-file-pdf" style="margin-left: 15px; font-size: 20px;"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="row form-group col-md-12">
+                                <div class="col-md-3 p-2">
+                                    <a href="{% url 'relatorioExame' %}" 
+                                        class="btn btn-primary" target="_new" style="font-size: medium;">
+                                        Relatório<i class="fas fa-file-pdf" style="margin-left: 15px; font-size: 20px;"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

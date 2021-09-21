@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block title %} MinhaVez {% endblock %}
+
+{% block corpo %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        {% if context.msg_busca %}
+                            <div class="alert alert-danger" role="alert">
+                                <h4 class="alert-heading">{{ context.msg_busca}}</h4>
+                                <hr>
+                                <p>Realize busca válida!</p>
+                            </div>
+                        {% endif %}
+                        <div class="form alert alert-info" role="alert">
+                            <div class="form-group">
+                                <p class="font-weight-bold" style="color: black;">Selecione a forma de pesquisa:</p>
+                                <select id="select" name="select" class="col-md-3 form-control form-control-sm">
+                                    <option value="">Selecione</option>
+                                    <option value="data">Data</option>
+                                    <option value="pesquisa">Demais Campos</option>
+                                </select>
+                            </div>
+                            <div id="pai">
+                                <div id=pesquisa>
+                                    <form class="form-inline" id="pai">
+                                        <div class="form-group mx-sm-3 mb-2" id="pesquisa">
+                                            <input type="text" class="form-control" name="pesquisa" placeholder="Digite sua pesquisa aqui..." required>
+                                        </div>
+                                        <button type="submit" class="btn btn-dark col-md-2" style="font-size: medium;">
+                                            Pesquisar<i class="fas fa-search" style="font-size: 20px; margin-left: 15px;"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                                <div id=data>
+                                    <form class="form-inline" id="pai">
+                                        <div class="form-group mx-sm-3 mb-2" id="data">
+                                            <input type="date" class="form-control" name="data" placeholder="Data..." required>
+                                        </div>
+                                        <p>até</p>
+                                        <div class="form-group mx-sm-3 mb-2" id="data">
+                                            <input type="date" class="form-control" name="dataFinal" placeholder="Data..." required>
+                                        </div>
+                                        <button type="submit" class="btn btn-dark col-md-2" style="font-size: medium;">
+                                            Pesquisar<i class="fas fa-search" style="font-size: 20px; margin-left: 15px;"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" style="padding-top: 20px;">
+                            <a href="{% url 'cadastroAutorizacao' %}" class="btn btn-primary" style="font-size: medium;">
+                                Novo<i class="fas fa-plus" style="font-size: 20px; margin-left: 15px;"></i>
+                            </a>
+                        </div>
+                        
+                        {% if context.autorizacoes %}
+                            <div class="card-title alert alert-info" role="alert">
+                                <div class="form-inline">
+                                    <div class="form-group mx-sm-3 mb-2">
+                                        <h1 style="font-size: xx-large;">Lista de Autorizações</h1>
+                                    </div>
+                                    <a href="{% url 'relatorioListaAutorizacao' %}" 
+                                        class="btn btn-dark" target="_new" style="font-size: medium; margin-left: auto;">
+                                        Relatório<i class="fas fa-file-pdf" style="margin-left: 15px; font-size: 20px;"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Nome</th>
+                                            <th>Responsável</th>
+                                            <th>Hora</th>
+                                            <th>Data</th>
+                                            <th>Status</th>
+                                            <th>Fila</th>
+                                            <th>Agendamento</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for autorizacao in context.autorizacoes %}
+                                            <td><a href="{% url 'detalhesAutorizacao' autorizacao.id %}">{{autorizacao.nome}}</a></td>
+                                            <td>{{autorizacao.responsavel.nome}} {{autorizacao.responsavel.sobrenome}}</td>
+                                            <td>{{autorizacao.hora}}</td>
+                                            <td>{{autorizacao.data |date:"d/m/Y" }}</td>
+
+                                            {% if autorizacao.status == 'INICIADA' %}
+                                                <td class="alert alert-success">{{autorizacao.status}}</td>
+                                            {% elif autorizacao.status == 'AGUARDANDO' %}
+                                                <td class="alert alert-primary">{{autorizacao.status}}</td>
+                                            {% else %}
+                                                <td class="alert alert-danger">{{autorizacao.status}}</td>
+                                            {% endif %}
+
+                                            {% if autorizacao.create_fila %}
+                                                <td><i class="fas fa-circle" style="color: green; font-size: 20px;"></i></td>
+                                            {% else %}
+                                                <td><i class="fas fa-circle" style="color: red; font-size: 20px;"></i></td>
+                                            {% endif %}
+
+                                            {% if autorizacao.agendamento%}
+                                                <td><i class="fas fa-circle" style="color: green; font-size: 20px;"></i></td>
+                                            {% else %}
+                                                <td><i class="fas fa-circle" style="color: red; font-size: 20px;"></i></td>
+                                            {% endif %}
+
+                                            {% if autorizacao.user == user %}
+                                                <td>
+                                                    <a href="{% url 'alterarAutorizacao' autorizacao.id %}" class="btn btn-primary" style="font-size: medium;">
+                                                        Alterar<i class="fas fa-undo-alt" style="margin-left: 10px; font-size: 15px;"></i>
+                                                    </a>
+                                                    <a href="{% url 'deleteAutorizacao' autorizacao.id %}" class="btn btn-danger" style="font-size: medium;">
+                                                        Deletar<i class="fas fa-trash" style="margin-left: 10px; font-size: 15px;"></i>
+                                                    </a>
+                                                </td>
+                                            {% else %}
+                                                <td>Criado por {{autorizacao.user.username}}</td>
+                                            {% endif %}
+                                    </tbody>
+                                        {% endfor %}
+                                </table>
+                            </div>
+                        {% else %}
+                            <div class="alert alert-danger" role="alert">
+                                <h4 class="alert-heading">{{ context.msg_alert }}</h4>
+                                <hr>
+                                <p>Realize cadastro de alguma Autorização para poder visualizar!</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script type="text/javascript">
+        
+        $(document).ready(function(){
+            $('#pai').children('div').hide();
+        });
+
+        $(document).ready(function(){
+            $('#select').on('change', function(){
+                var selectValor = '#'+$(this).val();
+
+                $('#pai').children('div').hide();
+                $('#pai').children(selectValor).show();
+            });
+        });
+    </script>
+{% endblock %}

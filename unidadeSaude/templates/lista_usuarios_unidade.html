@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} MinhaVez {% endblock %}
+
+{% block corpo %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title alert alert-info mt-5" role="alert">
+                            <div class="form-inline">
+                                <div class="form-group mx-sm-3 mb-2">
+                                    <h1 style="font-size: xx-large;">Lista de Usuários</h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row card-body">
+                            <a href="{% url 'novoUserUnidade' %}" class="btn btn-primary" style="font-size: medium;">
+                                Novo<i class="fas fa-plus" style="font-size: 20px; margin-left: 15px;"></i>
+                            </a>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <td>Username</td>
+                                        <th>Nome</th>
+                                        <th>Sobrenome</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for usuario in context.unidade.users.all %}
+                                        <td>{{usuario.username}}</td>
+                                        <td>{{usuario.first_name}}</td>
+                                        <td>{{usuario.last_name}}</td>
+                                </tbody>
+                                    {% endfor %}
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script type="text/javascript">
+    </script>
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load bootstrap %}
+
+{% block title %} MinhaVez {% endblock %}
+
+{% block corpo %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        {% if context.msg_alert %}
+                            <div class="alert alert-danger" role="alert">
+                                <h3 class="alert-heading">ATENÇÃO!</h3>
+                                <hr>
+                                <p>{{ context.msg_alert }}</p>
+                            </div>
+                        {% endif %}
+                        <div>
+                            <h3 class="alert-heading">ATENÇÃO!</h3>
+                            <hr>
+                            <p>Tem certeza que deseja adicionar o Cidadão na Fila: {{ context.fila.nome }} ?</p>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <div class="form-group">
+                                    <p class="font-weight-bold" style="color: black;">Selecione a forma de inclusão:</p>
+                                    <select id="select" name="select" class="col-md-3 form-control form-control-sm">
+                                        <option value="">Selecione</option>
+                                        <option value="sus">SUS/CNES</option>
+                                        <option value="cpf">CPF</option>
+                                    </select>
+                                </div>
+                                <div id="pai">
+                                    <div id="sus">
+                                        <form method="post" enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            <div class="form-group mx-sm-3 mb-2" id="sus">
+                                                <input type="text" class="form-control" name="sus" placeholder="SUS/CNES" required>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-6" style="margin-top: 5%;">
+                                                    <a href="{% url 'detalhesFila' context.fila.id %}" class="btn btn-danger" style="font-size: medium;">
+                                                        <span class="nav-text" style="font-size: medium;">Cancelar</span><i class="far fa-times-circle" style="font-size: 20px; margin-left: 15px;"></i>
+                                                    </a>
+                                                    <button type="submit" class="btn btn-success" style="font-size: medium;">
+                                                        Confirmar<i class="fas fa-check" style="font-size: 20px; margin-left: 15px;"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div id="cpf">
+                                        <form method="post" enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            <div class="form-group mx-sm-3 mb-2" id="cpf">
+                                                <input type="text" class="form-control" id="cpf_input" name="cpf" placeholder="CPF" required>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-6" style="margin-top: 5%;">
+                                                    <a href="{% url 'detalhesFila' context.fila.id %}" class="btn btn-danger" style="font-size: medium;">
+                                                        <span class="nav-text" style="font-size: medium;">Cancelar</span><i class="far fa-times-circle" style="font-size: 20px; margin-left: 15px;"></i>
+                                                    </a>
+                                                    <button type="submit" class="btn btn-success" style="font-size: medium;">
+                                                        Confirmar<i class="fas fa-check" style="font-size: 20px; margin-left: 15px;"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript">
+
+        $(document).ready(function(){
+            $('#pai').children('div').hide();
+        });
+
+        $(document).ready(function(){
+            $('#select').on('change', function(){
+                var selectValor = '#'+$(this).val();
+
+                $('#pai').children('div').hide();
+                $('#pai').children(selectValor).show();
+            });
+        });
+
+        $('#cpf_input').mask("000.000.000-00");
+    </script>
+{% endblock %}

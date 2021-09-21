@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load bootstrap %}
+
+{% block title %} MinhaVez {% endblock %}
+
+{% block corpo %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="forma-group">
+                            {{ form.nome|bootstrap }}
+                        </div>
+                        <div class="form-row">
+                            <div class="forma-group col-md-3">
+                                {{ form.vagas|bootstrap }}
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <a href="{% url 'homeUnidadeSaude' %}" class="btn btn-danger col-md-4" style="font-size: medium;">
+                                    <span class="nav-text" style="font-size: medium;">Cancelar</span><i class="far fa-times-circle" style="font-size: 20px; margin-left: 15px;"></i>
+                                </a>
+                                <button type="submit" class="btn btn-success col-md-6" style="font-size: medium;">
+                                    Cadastrar<i class="fas fa-check" style="font-size: 20px; margin-left: 15px;"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

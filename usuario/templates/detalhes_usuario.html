@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} MinhaVez {% endblock %}
+
+{% block corpo %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h3>Detalhes do Usuario</h3>
+                        </div>
+                        <div class="media align-items-center mb-4">
+                            <img class="mr-3 img-circle" src="{{ context.usuario.imagem.url }}" style="width: 150px; height: 150px;" alt="">
+                            <div class="media-body">
+                                <h3 class="mb-0">{{context.usuario.user.first_name}}</h3>
+                                <p class="text-muted mb-0">{{context.usuario.user.last_name}}</p>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>CPF</th>
+                                        <th>SUS</th>
+                                        <th>Telefone</th>
+                                        <th>E-mail</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <td>{{context.usuario.cpf}}</td>
+                                    <td>{{context.usuario.sus}}</td>
+                                    <td>{{context.usuario.telefone}}</td>
+                                    <td>{{context.usuario.user.email}}</td>
+                                </tbody>
+                            </table>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Logradouro</th>
+                                        <th>Número</th>
+                                        <th>Bairro</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <td>{{context.usuario.logradouro}}</td>
+                                    <td>{{context.usuario.numero}}</td>
+                                    <td>{{context.usuario.bairro}}</td>
+                                </tbody>
+                            </table>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Cidade</th>
+                                        <th>Estado</th>
+                                        <th>CEP</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <td>{{context.usuario.cidade}}</td>
+                                    <td>{{context.usuario.estado}}</td>
+                                    <td>{{context.usuario.cep}}</td>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                {% if context.agendamento %}
+                                    <a href="{% url 'detalhesAgendamento' context.agendamento.id %}" class="btn btn-primary col-md-4" style="font-size: medium;">
+                                        <span class="nav-text" style="font-size: medium;">Voltar</span><i class="fas fa-undo-alt" style="font-size: 20px; margin-left: 15px;"></i>
+                                    </a>
+                                {% elif context.fila %}
+                                    <a href="{% url 'detalhesFila' context.fila.id %}" class="btn btn-primary col-md-4" style="font-size: medium;">
+                                        <span class="nav-text" style="font-size: medium;">Voltar</span><i class="fas fa-undo-alt" style="font-size: 20px; margin-left: 15px;"></i>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

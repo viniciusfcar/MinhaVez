@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %} MinhaVez {% endblock %}
+
+{% block corpo %}
+    <div class="container-fluid">
+        <input type="hidden" id="msg" value="{{ context.msg }}">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush" style="justify-content: center;">
+                            <li class="list-group-item">
+                                <a style="font-size: 40px;" href="{% url 'alterarEmailUserUnidade' %}">
+                                    Alterar E-mail<i class="far fa-edit" style="margin-left: 200px; font-size: 30px;"></i>
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a style="font-size: 40px;" href="{% url 'alterarSenhaUserUnidade' %}">
+                                    Alterar Senha<i class="far fa-edit" style="margin-left: 200px; font-size: 30px;"></i>
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a style="font-size: 40px;" href="{% url 'alterarUsernameUserUnidade' %}">
+                                    Alterar Username<i class="far fa-edit" style="margin-left: 200px; font-size: 30px;"></i>
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a style="font-size: 40px;" href="{% url 'listaUsuariosUnidade' %}">
+                                    Lista de Usuários Vinculados<i class="far fa-list-alt" style="margin-left: 200px; font-size: 30px;"></i>
+                                </a>
+                            </li>
+                          </ul>
+                    </div>
+                    <!-- MODAL -->
+                    <div class="modal fade" id="modalMsg" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <p class="modal-title" id="exampleModalLabel" style="font-size: 30px; color: black;">
+                                        ATENÇÃO<i class="fas fa-exclamation-triangle" style="font-size: 30px; color: green; padding-left: 20px;"></i>
+                                    </p>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" style="align-items: center;">
+                                    <p style="font-size: medium; color: black;">{{ context.msg }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- FIM MODAL -->
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script type="text/javascript">
+        $(document).ready(async function(){
+        
+            if(msg.value){
+                $('#modalMsg').modal('show');
+            };
+        });
+    </script>
+{% endblock %}

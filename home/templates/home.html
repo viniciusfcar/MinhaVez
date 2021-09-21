@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block corpo %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="container-fluid mt-3">
+                        <div class="row">
+                            {% if context.msg_error %}
+                                <div class="alert alert-danger" role="alert">
+                                    <h4 class="alert-heading">{{ context.msg_error}}</h4>
+                                    <hr>
+                                    <p></p>
+                                </div>
+                            {% endif %}
+                            <div class="col-lg-3 col-sm-6">
+                                <a href="{% url 'filasIniciadas' %}">
+                                    <div class="card gradient-11">
+                                        <div class="card-body">
+                                            <h4 class="card-title text-white">FILAS</h4>
+                                            <div class="d-inline-block">
+                                                <h4 class="text-white">INICIADAS</h4>
+                                            </div>
+                                            <div class="d-inline-block">
+                                                <i class="fas fa-restroom" style="font-size: 30px; margin-left: 15px; color: white;"></i>
+                                                <i class="fab fa-accessible-icon" style="font-size: 30px; margin-left: 15px; color: white;"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-lg-3 col-sm-6">
+                                <a href="{% url 'listaConsultasAguardando' %}">
+                                    <div class="card gradient-4">
+                                        <div class="card-body">
+                                            <h4 class="card-title text-white">CONSULTAS</h4>
+                                            <div class="d-inline-block">
+                                                <h4 class="text-white">AGUARDANDO</h4>
+                                            </div>
+                                            <div class="d-inline-block">
+                                                <i class="icon-graph menu-icon" style="font-size: 30px; margin-left: 15px;"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-lg-3 col-sm-6">
+                                <a href="{% url 'listaAutorizacoesAguardando' %}">
+                                    <div class="card gradient-2">
+                                        <div class="card-body">
+                                            <h4 class="card-title text-white">AUTORIZAÇÕES</h4>
+                                            <div class="d-inline-block">
+                                                <h4 class="text-white">AGUARDANDO</h4>
+                                            </div>
+                                            <div class="d-inline-block">
+                                                <i class="icon-folder menu-icon" style="font-size: 30px; margin-left: 15px;"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-lg-3 col-sm-6">
+                                <a href="{% url 'listaExamesAguardando' %}">
+                                    <div class="card gradient-3                                                                                                                                                                                                                                                                                                                                                                                                     ">
+                                        <div class="card-body">
+                                            <h4 class="card-title text-white">EXAMES</h4>
+                                            <div class="d-inline-block">
+                                                <h4 class="text-white">AGUARDANDO</h4>
+                                            </div>
+                                            <div class="d-inline-block">
+                                                <i class="fas fa-vial" style="font-size: 30px; margin-left: 15px;"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

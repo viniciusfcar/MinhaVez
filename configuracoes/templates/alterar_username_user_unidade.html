@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap %}
+
+{% block title %} MinhaVez {% endblock %}
+
+{% block corpo %}
+
+    <div class="container-fluid">
+        <input type="hidden" id="msg" value="{{ context.msg }}">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" id="username" name="username" class="form-control" placeholder="Username Atual" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" id="newUsername" name="newUsername" class="form-control" placeholder="Novo Username" required>
+                                        <div style="display: none;" id="alert-1">
+                                            <p style="color: red;">*username já em uso, escolha outro.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <a href="{% url 'configuracoes_unidade' %}" class="btn btn-danger col-md-4" style="font-size: medium;">
+                                        <span class="nav-text" style="font-size: medium;">Cancelar</span><i class="far fa-times-circle" style="font-size: 20px; margin-left: 15px;"></i>
+                                    </a>
+                                    <button type="submit" id="btn" class="btn btn-success col-md-6" style="font-size: medium;">
+                                        Alterar<i class="fas fa-check" style="font-size: 20px; margin-left: 15px;"></i>
+                                    </button> 
+                                </div>
+                            </div>
+                        </form>
+                        <!-- MODAL -->
+                        <div class="modal fade" id="modalMsg" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <p class="modal-title" id="exampleModalLabel" style="font-size: 30px; color: black;">
+                                            ATENÇÃO<i class="fas fa-exclamation-triangle" style="font-size: 30px; color: red; padding-left: 20px;"></i>
+                                        </p>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body" style="align-items: center;">
+                                        <p style="font-size: medium; color: black;">{{ context.msg }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- FIM MODAL -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+    $(document).ready(async function(){
+        
+        if(msg.value){
+            $('#modalMsg').modal('show');
+        };
+
+        $('#newUsername').on('change', async function(){
+            username = $(this).val();
+
+            let apiCall = await fetch('https://minhavezsistema.com.br/api/user/?search='+username);
+            const user = await apiCall.json();
+
+            if(user[0] != null) {
+                document.getElementById('alert-1').style.display = "block";
+                document.getElementById("btn").disabled = true;
+            } else {
+                document.getElementById('alert-1').style.display = "none";
+                document.getElementById("btn").disabled = false;
+            }
+        });          
+    });
+</script>
+{% endblock %}

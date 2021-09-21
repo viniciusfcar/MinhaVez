@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load bootstrap %}
+
+{% block title %} MinhaVez {% endblock %}
+
+{% block corpo %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="forma-group card">
+                            <label for="inputDate">Nome</label>
+                            <input type="text" class="form-control" id="nome" value="{{ context.consulta.nome }}" name="nome" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="forma-group col-md-3">
+                                <label for="inputDate">Data</label>
+                                <input type="date" class="form-control" id="data" name="data" value="{{context.consulta.data|date:'Y-m-d'}}" required>
+                            </div>
+                            <div class="forma-group col-md-2">
+                                <label for="inputDate">Hora</label>
+                                <input type="text" class="form-control" minlength="4" value="{{ context.consulta.hora }}" maxlength="5" id="hora" name="hora" required>
+                            </div>
+                        </div>
+                        <div class="forma-group col-md-2 card row" style="font-size: medium; margin-top: 20px;">
+                            <label>Especialista</label>
+                            <select id="select-list" name="especialista" style="width: 175%;" class="form-control" required>
+                                <option value="{{ context.consulta.especialista.id }}">{{ context.consulta.especialista }}</option>
+                                {% for esp in context.especialistas %}
+                                    <option value="{{ esp.id }}">{{esp.nome}} - {{esp.profissao}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <a href="{% url 'homeUnidadeSaude' %}" 
+                                    class="btn btn-danger col-md-4">
+                                    <span class="nav-text" style="font-size: medium;">Cancelar</span><i class="far fa-times-circle" style="font-size: 20px; margin-left: 15px;"></i>
+                                </a>
+                                <button type="submit" class="btn btn-success col-md-6" style="font-size: medium;">
+                                    Cadastrar<i class="fas fa-check" style="font-size: 20px; margin-left: 15px;"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+
+    $('#hora').mask("00:00");
+    
+</script>
+{% endblock %}

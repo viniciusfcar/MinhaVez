@@ -1,0 +1,121 @@
+'{% extends 'base.html' %}
+
+{% block title %} MinhaVez {% endblock %}
+
+{% block corpo %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        {% if context.msg_error %}
+                            <div class="alert alert-danger" role="alert">
+                                <h4 class="alert-heading">{{ context.msg_error}}</h4>
+                                <hr>
+                                <p>Inicie a fila para poder iniciar a autorização!</p>
+                            </div>
+                        {% endif %}
+                        <div class="row card-body col-md-12">
+                            {% if context.autorizacao.agendamento %}
+                                <div class="col-md-3 p-2">
+                                    <a href="{% url 'detalhesAgendamento' context.autorizacao.agendamento.id %}"
+                                        class="btn btn-primary" style="font-size: medium;">
+                                        Agendamento<i class="fas fa-file-contract" style="font-size: 20px; margin-left: 15px;"></i>
+                                    </a>
+                                </div>
+                            {% else %}
+                                <div class="col-md-3 p-2">
+                                    <a href="{% url 'cadastroAgendamentoAutorizacao' context.autorizacao.id %}"
+                                        class="btn btn-primary" style="font-size: medium;">
+                                        Criar Agendamento<i class="fas fa-file-signature" style="font-size: 20px; margin-left: 15px;"></i>
+                                    </a>
+                                </div>
+                            {% endif %}
+                            {% if context.autorizacao.user == user and context.autorizacao.create_fila is False %}
+                                <div class="col-md-3 p-2">
+                                    <a href="{% url 'cadastroFilaAutorizacao' context.autorizacao.id %}" 
+                                        class="btn btn-success" style="font-size: medium;">
+                                        Iniciar Fila<i class="fas fa-play" style="font-size: 20px; margin-left: 15px;"></i>
+                                    </a>
+                                </div>
+                            {% elif context.autorizacao.create_fila %}
+                                <div class="form-group col-md-12">
+                                    <a href="{% url 'detalhesFila' context.fila_normal.id %}" 
+                                        class="btn btn-info col-md-4" style="font-size: medium;">
+                                        Fila Normal<i class="fas fa-restroom" style="font-size: 20px; margin-left: 15px;"></i>
+                                    </a>
+                                    <a href="{% url 'detalhesFila' context.fila_preferencial.id %}" 
+                                        class="btn btn-info col-md-4" style="font-size: medium;">
+                                        Fila Preferencial<i class="fab fa-accessible-icon" style="font-size: 20px; margin-left: 15px;"></i>
+                                    </a>
+                                    {% if context.autorizacao.user == user %}
+                                        <a href="{% url 'deleteFila' context.fila_normal.id context.fila_preferencial.id %}" class="btn btn-danger col-md-2" style="font-size: medium;">
+                                            <span class="nav-text" style="font-size: medium;">Excluir Fila</span><i class="far fa-times-circle" style="font-size: 20px; margin-left: 15px;"></i>
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            {% else %}
+                                <div class="alert alert-danger p-2" role="alert">
+                                    <h4 class="alert-heading">Criada por {{ context.autorizacao.user.username }}</h4>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="card-title alert alert-info" role="alert">
+                            <div class="form-inline">
+                                <div class="form-group mx-sm-3 mb-2">
+                                    <h1 style="font-size: xx-large;">Detalhes da Autorizacao: {{ context.autorizacao.nome }}</h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Responsável</th>
+                                        <th>Hora</th>
+                                        <th>Data</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <td>{{context.autorizacao.responsavel.nome}} {{context.autorizacao.responsavel.sobrenome}}</td>
+                                    <td>{{context.autorizacao.hora}}</td>
+                                    <td>{{context.autorizacao.data}}</td>
+                                </tbody>
+                            </table>
+                        </div>
+                        {% if context.autorizacao.status == 'AGUARDANDO' %}
+                            <a href="{% url 'iniciarAutorizacao' context.autorizacao.id %}" 
+                                class="btn btn-success" style="font-size: medium;">
+                                Iniciar Autorizacao<i class="fas fa-play" style="font-size: 20px; margin-left: 15px;"></i>
+                            </a>
+                        {% elif context.autorizacao.status == 'INICIADA' %}
+                            <div class="row form-group col-md-12">  
+                                <div class="col-md-3 p-2">
+                                    <a href="{% url 'encerrarAutorizacao' context.autorizacao.id %}" 
+                                        class="btn btn-danger" style="font-size: medium;">
+                                        <span class="nav-text" style="font-size: medium;">Encerrar Autorização</span><i class="far fa-times-circle" style="font-size: 20px; margin-left: 15px;"></i>
+                                    </a>
+                                </div>
+                                <div class="col-md-3 p-2">
+                                    <a href="{% url 'relatorioAutorizacao' %}" 
+                                        class="btn btn-dark" target="_new" style="font-size: medium;">
+                                        Relatório<i class="fas fa-file-pdf" style="margin-left: 15px; font-size: 20px;"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="row form-group col-md-12">
+                                <div class="col-md-3 p-2">
+                                    <a href="{% url 'relatorioAutorizacao' %}" 
+                                        class="btn btn-primary" target="_new" style="font-size: medium;">
+                                        Relatório<i class="fas fa-file-pdf" style="margin-left: 15px; font-size: 20px;"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

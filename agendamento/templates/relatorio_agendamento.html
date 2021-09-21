@@ -1,0 +1,78 @@
+{% load static %}
+{% load bootstrap %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+        <title>MinhaVez</title>
+    </head> 
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="col text-center">
+                                <img class="img-fluid" src="{% static 'midias_minhavez/logo.png' %}" style="width: 350px; height: 100px;">
+                            </div>
+                            <p style="font-size: medium; margin-top: 5%; margin-left: 70%;">{{context.data}}</p>
+                            <div class="card-title mt-5">
+                                <h4 style="font-size: xx-large;">Detalhes do Agendamento: {{ context.agendamento.nome }}</h4>
+                            </div>
+                            <div class="table-responsive" style="margin-top: 5%;">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            {% if context.autorizacao.responsavel %}
+                                                <th>Responsável</th>
+                                                <th>Vagas restantes</th>
+                                            {% else %}
+                                                <th>Especialista</th>
+                                                <th>Vagas restantes</th>
+                                            {% endif %}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% if context.autorizacao.responsavel %}
+                                            <td>{{context.autorizacao.responsavel.nome}}
+                                                {{context.autorizacao.responsavel.sobrenome}}</td>
+                                            <td>{{context.agendamento.vagas}}</td>
+                                        {% else %}
+                                            <td>{{context.consulta.especialista.nome}}
+                                                {{context.consulta.especialista.sobrenome}}</td>
+                                            <td>{{context.agendamento.vagas}}</td>
+                                        {% endif %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            {% if context.usuarios.all %}
+                                <div class="card-title mt-5">
+                                    <h4 style="font-size: xx-large;">Úsuarios para serem atendidos</h4>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Nome</th>
+                                                <th>Sobrenome</th>
+                                                <th>SUS</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for usuario in context.usuarios.all %}
+                                                <td>{{usuario.user.first_name}}</td>
+                                                <td>{{usuario.user.last_name}}</td>
+                                                <td>{{usuario.sus}}</td>
+                                        </tbody>
+                                            {% endfor %}
+                                    </table>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

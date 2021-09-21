@@ -1,0 +1,43 @@
+{% extends 'home_adm.html' %}
+{% load bootstrap %}
+
+{% block title %} MinhaVez {% endblock %}
+
+{% block corpo %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ context.form_und|bootstrap }}
+                        {{ context.form_user|bootstrap }}
+                        <div class="form-row">
+                            <div class="col-lg-6 form-group">
+                                <div class="custom-file form-group">
+                                    <label>E-mail Unidade</label>
+                                    <input type="text" class="form-control" name="emailUnidade" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 form-group">
+                                <div class="custom-file form-group">
+                                    <label>E-mail Usuario</label>
+                                    <input type="text" class="form-control" name="emailUser" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 card">
+                            <button type="submit" class="btn btn-success">Cadastrar</button>
+                        </div>
+                        <div class="col-12 card">
+                            <a href="{% url 'index' %}" class="btn btn-danger">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

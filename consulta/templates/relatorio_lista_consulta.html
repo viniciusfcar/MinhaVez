@@ -1,0 +1,60 @@
+{% load static %}
+{% load bootstrap %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+        <title>MinhaVez</title>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="col text-center">
+                                <img class="img-fluid" src="{% static 'midias_minhavez/logo.png' %}" style="width: 350px; height: 100px;">
+                            </div>
+                            <p style="font-size: medium; margin-top: 5%; margin-left: 70%;">{{context.data}}</p>
+                            <div class="card-title mt-5">
+                                <h4 style="font-size: xx-large;">Lista de Consultas</h4>
+                            </div>
+                            <div class="table-responsive"  style="margin-top: 5%;">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Nome</th>
+                                            <th>Especialista</th>
+                                            <th>Hora</th>
+                                            <th>Data</th>
+                                            <th>Status</th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for consulta in context.consultas %}
+                                            <td>{{consulta.nome}}</td>
+                                            <td>{{consulta.especialista}}</td>
+                                            <td>{{consulta.hora}}</td>
+                                            <td>{{ consulta.data |date:"d, M, Y"}}</td>
+                                            {% if consulta.status == 'INICIADA' %}
+                                                <td class="alert alert-success">{{consulta.status}}</td>
+                                            {% elif consulta.status == 'AGUARDANDO' %}
+                                                <td class="alert alert-primary">{{consulta.status}}</td>
+                                            {% else %}
+                                                <td class="alert alert-danger">{{consulta.status}}</td>
+                                            {% endif %}
+                                            <td>Criado por {{consulta.user.username}}</td>
+                                    </tbody>
+                                        {% endfor %}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,253 @@
+{% extends 'base.html' %}
+
+{% block title %} MinhaVez {% endblock %}
+
+{% block corpo %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        {% if context.msg_vagas %}
+                            <div class="alert alert-danger" role="alert">
+                                <h4 class="alert-heading">{{ context.msg_vagas }}</h4>
+                                <hr>
+                                <p>Indicamos que tente agendar para outra data!</p>
+                            </div>
+                        {% elif context.msg_usuario %}
+                            <div class="alert alert-danger" role="alert">
+                                <h4 class="alert-heading">{{ context.msg_usuario }}</h4>
+                                <hr>
+                                <p>Verifique se os dados foram preenchidos corretamente ou se o úsuario contém cadastro!</p>
+                                <p>Verifique se o Usuário está na fila!</p>
+                            </div>
+                        {% endif %}
+                        <div class="form-row">
+                            {% if context.consulta.user == user or context.autorizacao.user == user or context.exame.user == user %}
+                                <div class="card-title col-md-4">
+                                    <a href="{% url 'deleteAgendamento' context.agendamento.id %}" 
+                                        class="btn btn-danger">
+                                        <span class="nav-text" style="font-size: medium;">Deletar Agendamento</span><i class="fas fa-trash" style="margin-left: 10px; font-size: 15px;"></i>
+                                    </a>
+                                </div>
+                            {% endif %}
+                            <div class="col-md-4">
+                                <div class="dropdown">
+                                    <button class="btn btn-primary dropdown-toggle" style="font-size: medium;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Adicionar Usuário
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <button class="dropdown-item" data-toggle="modal"
+                                            data-target="#exampleModal" data-whatever="@mdo">
+                                            CPF
+                                        </button>
+                                        <button class="dropdown-item" data-toggle="modal"
+                                            data-target="#susModal" data-whatever="@mdo">
+                                            SUS
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-title alert alert-info" role="alert" style="margin-top: 20px;">
+                            <div class="form-inline">
+                                <div class="form-group mx-sm-3 mb-2">
+                                    <h4 style="font-size: xx-large;">Detalhes do Agendamento</h4>
+                                </div>
+                                <a href="{% url 'relatorioAgendamento' %}" 
+                                    class="btn btn-dark" target="_new" style="font-size: medium; margin-left: auto;">
+                                    Relatório<i class="fas fa-file-pdf" style="margin-left: 15px; font-size: 20px;"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Vagas restantes</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <td>{{ context.agendamento.nome }}</td>
+                                    <td>{{ context.agendamento.vagas }}</td>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-group mx-sm-3 mb-2">
+                            {% if context.autorizacao %}
+                                <h7 style="font-size: xx-large; color: black;">Dados da Autorização</h7>
+                            {% elif context.consulta %}
+                                <h7 style="font-size: xx-large; color: black;">Dados da Consulta</h7>
+                            {% else %}
+                                <h7 style="font-size: xx-large; color: black;">Dados do Exame</h7>
+                            {% endif %}
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        {% if context.autorizacao %}
+                                            <th>Nome</th>
+                                            <th>Responsável</th>
+                                            <th>Hora</th>
+                                            <th>Data</th>
+                                            <th>Status</th>
+                                        {% elif context.consulta %}
+                                            <th>Nome</th>
+                                            <th>Especialista</th>
+                                            <th>Hora</th>
+                                            <th>Data</th>
+                                            <th>Status</th>
+                                        {% else %}
+                                            <th>Nome</th>
+                                            <th>Tipo</th>
+                                            <th>Hora</th>
+                                            <th>Data</th>
+                                            <th>Status</th>
+                                        {% endif %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if context.autorizacao %}
+                                        <td>{{context.autorizacao.nome}}</td>
+                                        <td>{{context.autorizacao.responsavel.nome}}
+                                            {{context.autorizacao.responsavel.sobrenome}}</td>
+                                        <td>{{context.autorizacao.hora}}</td>
+                                        <td>{{context.autorizacao.data}}</td>
+                                        <td>{{context.autorizacao.status}}</td>
+                                        <td>
+                                            <a href="{% url 'detalhesAutorizacao' context.autorizacao.id %}" 
+                                                class="btn btn-primary" style="font-size: medium;">
+                                                Detalhes<i class="fas fa-info" style="margin-left: 10px; font-size: 15px;"></i>
+                                            </a>
+                                        </td>
+                                    {% elif context.consulta %}
+                                        <td>{{context.consulta.nome}}</td>
+                                        <td>{{context.consulta.especialista.nome}}
+                                            {{context.consulta.especialista.sobrenome}}</td>
+                                        <td>{{context.consulta.hora}}</td>
+                                        <td>{{context.consulta.data}}</td>
+                                        <td>{{context.consulta.status}}</td>
+                                        <td>
+                                            <a href="{% url 'detalhesConsulta' context.consulta.id %}" 
+                                                class="btn btn-primary" style="font-size: medium;">
+                                                Detalhes<i class="fas fa-info" style="margin-left: 10px; font-size: 15px;"></i>
+                                            </a>
+                                        </td>
+                                    {% else %}
+                                        <td>{{context.exame.nome}}</td>
+                                        <td>{{context.exame.tipo}}</td>
+                                        <td>{{context.exame.hora}}</td>
+                                        <td>{{context.exame.data}}</td>
+                                        <td>{{context.exame.status}}</td>
+                                        <td>
+                                            <a href="{% url 'detalhesExame' context.exame.id %}" 
+                                                class="btn btn-primary" style="font-size: medium;">
+                                                Detalhes<i class="fas fa-info" style="margin-left: 10px; font-size: 15px;"></i>
+                                            </a>
+                                        </td>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% if context.usuarios.all %}
+                            <div class="card-title">
+                                <h4>Usuários para serem atendidos</h4>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Nome</th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for usuario in context.usuarios.all %}
+                                            <td>{{usuario.user.first_name}}
+                                                {{usuario.user.last_name}}</td>
+                                            <td>
+                                                <a href="{% url 'detalhesUsuario' usuario.id context.agendamento.id %}" class="btn btn-primary" style="font-size: medium; margin-left: auto;">
+                                                    Detalhes<i class="fas fa-info" style="margin-left: 10px; font-size: 15px;"></i>
+                                                </a>
+                                                <a href="{% url 'excluiUsuarioAgendamento' usuario.id context.agendamento.id %}" class="btn btn-danger" style="font-size: medium; margin-left: auto;">
+                                                    Excluir<i class="fas fa-trash" style="margin-left: 10px; font-size: 15px;"></i>
+                                                </a>
+                                            </td>
+                                    </tbody>
+                                        {% endfor %}
+                                </table>
+                            </div>
+                        {% endif %}
+                        <!-- MODAL CPF -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Adicionar Cidadão</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                    <form method="post" action="{% url 'adicionaUsuarioAgendamento' context.agendamento.id %}" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="recipient-name" class="col-form-label">CPF:</label>
+                                            <input type="text" class="form-control" id="cpf" name="cpf">
+                                        </div>
+                                        </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                                            <button type="submit" class="btn btn-primary">Salvar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- FIM MODAL -->
+                        <!-- MODAL SUS -->
+                        <div class="modal fade" id="susModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Adicionar Cidadão</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                    <form method="post" action="{% url 'adicionaUsuarioAgendamento' context.agendamento.id %}" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="recipient-name" class="col-form-label">SUS/CNES:</label>
+                                            <input type="text" class="form-control" id="sus" name="sus">
+                                        </div>
+                                        </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                                            <button type="submit" class="btn btn-primary">Salvar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- FIM MODAL -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+
+    $(document).ready(async function(){
+
+        $('#cpf').mask("000.000.000-00");
+    });
+
+</script>
+{% endblock %}

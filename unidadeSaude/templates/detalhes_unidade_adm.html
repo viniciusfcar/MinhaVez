@@ -1,0 +1,133 @@
+{% extends 'base_adm.html' %}
+
+{% block title %} MinhaVez {% endblock %}
+
+{% block corpo %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title alert alert-info" role="alert">
+                            <div class="form-inline">
+                                <div class="form-group mx-sm-3 mb-2">
+                                    <h2 style="font-size: xx-large;">
+                                        Detalhes Unidade de Saúde
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Telefone</th>
+                                        <th>E-mail</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <td>{{context.unidadeSaude.razao_social}}</td>
+                                    <td>{{context.unidadeSaude.telefone}}</td>
+                                    <td>{{context.unidadeSaude.email}}</td>
+                                </tbody>
+                            </table>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>CEP</th>
+                                        <th>Logradouro</th>
+                                        <th>Número</th>
+                                        <th>Complemento</th>
+                                        <th>Bairro</th>
+                                        <th>Cidade</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <td>{{context.unidadeSaude.cep}}</td>
+                                    <td>{{context.unidadeSaude.logradouro}}</td>
+                                    <td>{{context.unidadeSaude.numero}}</td>
+                                    <td>{{context.unidadeSaude.complemento}}</td>
+                                    <td>{{context.unidadeSaude.bairro}}</td>
+                                    <td>{{context.unidadeSaude.cidade}}</td>
+                                    <td>{{context.unidadeSaude.estado}}</td>
+                                </tbody>
+                            </table>
+                        </div>
+                        {% if context.unidadeSaude.consultas.all %}
+                            <div class="card-title alert alert-info mt-5" role="alert">
+                                <div class="form-inline">
+                                    <div class="form-group mx-sm-3 mb-2">
+                                        <h4 style="font-size: xx-large;">Consultas</h4>
+                                        <i class="icon-graph" style="margin-left: 30px; font-size: 40px; color: black;"></i>
+                                    </div>
+                                    <a href="{% url 'listaConsultasUnidade' context.unidadeSaude.id %}" 
+                                        class="btn btn-primary" style="font-size: medium; margin-left: auto;">
+                                        Detalhes<i class="fas fa-info" style="margin-left: 10px; font-size: 15px;"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if context.unidadeSaude.autorizacoes.all %}
+                            <div class="card-title alert alert-info mt-3" role="alert">
+                                <div class="form-inline">
+                                    <div class="form-group mx-sm-3 mb-2">
+                                        <h4 style="font-size: xx-large;">Autorizações</h4>
+                                        <i class="icon-folder" style="margin-left: 30px; font-size: 40px; color: black;"></i>
+                                    </div>
+                                    <a href="{% url 'listaAutorizacoesUnidade' context.unidadeSaude.id %}" 
+                                        class="btn btn-primary" style="font-size: medium; margin-left: auto;">
+                                        Detalhes<i class="fas fa-info" style="margin-left: 10px; font-size: 15px;"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if context.unidadeSaude.exames.all %}
+                            <div class="card-title alert alert-info mt-3" role="alert">
+                                <div class="form-inline">
+                                    <div class="form-group mx-sm-3 mb-2">
+                                        <h4 style="font-size: xx-large;">Exames</h4>
+                                        <i class="fas fa-vial" style="margin-left: 30px; font-size: 40px; color: black;"></i>
+                                    </div>
+                                    <a href="{% url 'listaExamesUnidade' context.unidadeSaude.id %}" 
+                                        class="btn btn-primary" style="font-size: medium; margin-left: auto;">
+                                        Detalhes<i class="fas fa-info" style="margin-left: 10px; font-size: 15px;"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if context.unidadeSaude.especialistas.all %}
+                            <div class="card-title alert alert-info mt-3" role="alert">
+                                <div class="form-inline">
+                                    <div class="form-group mx-sm-3 mb-2">
+                                        <h4 style="font-size: xx-large;">Especialistas</h4>
+                                        <i class="icon-user" style="margin-left: 30px; font-size: 40px; color: black;"></i>
+                                    </div>
+                                    <a href="{% url 'listaEspecialistasUnidade' context.unidadeSaude.id %}" 
+                                        class="btn btn-primary" style="font-size: medium; margin-left: auto;">
+                                        Detalhes<i class="fas fa-info" style="margin-left: 10px; font-size: 15px;"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if context.unidadeSaude.responsaveis.all %}
+                            <div class="card-title alert alert-info mt-3" role="alert">
+                                <div class="form-inline">
+                                    <div class="form-group mx-sm-3 mb-2">
+                                        <h4 style="font-size: xx-large;">Responsáveis</h4>
+                                        <i class="ti-user" style="margin-left: 30px; font-size: 40px; color: black;"></i>
+                                    </div>
+                                    <a href="{% url 'listaResponsaveisUnidade' context.unidadeSaude.id %}" 
+                                        class="btn btn-primary" style="font-size: medium; margin-left: auto;">
+                                        Detalhes<i class="fas fa-info" style="margin-left: 10px; font-size: 15px;"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

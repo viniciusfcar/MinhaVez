@@ -1,0 +1,61 @@
+{% extends 'base_usuario.html' %}
+
+{% block title %} MinhaVez {% endblock %}
+
+{% block corpo %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h4>Detalhes do Agendamento: {{ context.agendamento.nome }}</h4>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        {% if context.agendamento.autorizacao.responsavel %}
+                                            <th>Responsável</th>
+                                            <th>Vagas restantes</th>
+                                        {% elif context.agendamento.consulta.especialista %}
+                                            <th>Especialista</th>
+                                            <th>Vagas restantes</th>
+                                        {% else %}
+                                            <th>Tipo</th>
+                                            <th>Vagas restantes</th>
+                                        {% endif %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if context.autorizacao.responsavel %}
+                                        <td>{{context.autorizacao.responsavel.nome}}
+                                            {{context.autorizacao.responsavel.sobrenome}}</td>
+                                        <td>{{context.agendamento.vagas}}</td>
+                                    {% elif context.agendamento.consulta.especialista %}
+                                        <td>{{context.consulta.especialista.nome}}
+                                            {{context.consulta.especialista.sobrenome}}</td>
+                                        <td>{{context.agendamento.vagas}}</td>
+                                    {% else %}
+                                        <td>{{context.exame.tipo}}</td>
+                                        <td>{{context.agendamento.vagas}}</td>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                            {% if context.consulta %}
+                                <a href="{% url 'detalhesConsultaUsuario' context.consulta.id %}" 
+                                    class="btn btn-primary">Detalhes Consulta</a>
+                            {% elif context.autorizacao %}
+                                <a href="{% url 'detalhesAutorizacaoUsuario' context.autorizacao.id %}" 
+                                    class="btn btn-primary">Detalhes Autorização</a>
+                            {% else %}
+                                <a href="{% url 'detalhesExameUsuario' context.exame.id %}" 
+                                    class="btn btn-primary">Detalhes Exame</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

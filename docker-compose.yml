@@ -1,0 +1,47 @@
+version: "3"
+
+services:
+  nginx:
+    build: ./nginx
+    volumes:
+      - staticfiles_folder:/home/app/web/staticfiles
+      - medias_folder:/home/app/web/media
+    ports:
+      - 80:80
+    depends_on:
+      - web
+
+  web:
+    build: .
+    command: ./wait-for-it.sh -t 0 db:3306 -- bash -c "python manage.py collectstatic --noinput && python manage.py migrate && gunicorn minhaVezSistema.wsgi -b 0.0.0.0:8000"
+    volumes:
+      - staticfiles_folder:/home/app/staticfiles
+      - medias_folder:/home/app/media
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - "./scripts/schema.sql:/docker-entrypoint-initdb.d/1.sql"
+      - "./scripts/data.sql:/docker-entrypoint-initdb.d/2.sql"
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+volumes:
+  mysql_data:
+  staticfiles_folder:
+  medias_folder:

@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load bootstrap %}
+
+{% block title %} MinhaVez {% endblock %}
+
+{% block corpo %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        {% if context.msg_busca %}
+                            <div class="alert alert-danger" role="alert">
+                                <h4 class="alert-heading">{{ context.msg_busca }}</h4>
+                                <hr>
+                                <p>Realize busca válida!</p>
+                            </div>
+                        {% endif %}
+                        <div id=data class="alert alert-info" role="alert">
+                            <label class="card-title">Selecione</label>
+                            <form class="form-inline" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <select id="select-list" name="objeto" class="form-control col-md-4" required>
+                                    <option value="{{context.objeto}}">{{context.objeto}}</option>
+                                    <option value="Consultas">Consultas</option>
+                                    <option value="Autorizacoes">Autorizações</option>
+                                    <option value="Exames">Exames</option>
+                                </select>
+                                <button type="submit" class="btn btn-dark" style="font-size: medium; margin-left: 3%;">
+                                    <i class="fas fa-search" style="font-size: 20px;"></i>
+                                </button>
+                            </form>
+                        </div>
+                        {% if context.msg_alert %}
+                            <div class="card-title alert alert-info" role="alert">
+                                <form class="form-inline" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <input type="hidden" value="{{context.objeto}}" name="objeto"/>
+                                    <div class="form-group mx-sm-3 mb-2">
+                                        <input type="date" class="form-control" name="data" placeholder="Data..." required>
+                                    </div>
+                                    <p>até</p>
+                                    <div class="form-group mx-sm-3 mb-2">
+                                        <input type="date" class="form-control" name="dataFinal" placeholder="Data..." required>
+                                    </div>
+                                    <button type="submit" class="btn btn-dark" style="font-size: medium;">
+                                        <i class="fas fa-search" style="font-size: 20px;"></i>
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="alert alert-danger" role="alert">
+                                <h4 class="alert-heading">{{ context.msg_alert }}</h4>
+                                <hr>
+                                <p>Realize cadastro de alguma Fila para poder visualizar!</p>
+                            </div>
+                        {% elif context.objetos %}
+                            <div class="card-title alert alert-info" role="alert" style="margin-top: 30px;">
+                                <div class="form-inline">
+                                    <div class="form-group mx-sm-3 mb-2">
+                                        <h1 style="font-size: xx-large;">Lista das Filas</h1>
+                                    </div>
+                                </div>
+                                <div>
+                                    <form class="form-inline" method="POST" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <input type="hidden" value="{{context.objeto}}" name="objeto"/>
+                                        <div class="form-group mx-sm-3 mb-2">
+                                            <input type="date" class="form-control" name="data" placeholder="Data..." required>
+                                        </div>
+                                        <p>até</p>
+                                        <div class="form-group mx-sm-3 mb-2">
+                                            <input type="date" class="form-control" name="dataFinal" placeholder="Data..." required>
+                                        </div>
+                                        <button type="submit" class="btn btn-dark" style="font-size: medium;">
+                                            <i class="fas fa-search" style="font-size: 20px;"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <tbody>
+                                        {% for obj in context.objetos.all %}
+                                            {% for fila in obj.filas.all %}
+                                                <td><p style="color: black; ">Nome</p>{{fila.nome}}</td>
+                                                <td><p style="color: black;">Vagas</p>{{fila.vagas}}</td>
+                                                <td><p style="color: black;">Hora</p>{{obj.hora}}</td>
+                                                <td><p style="color: black;">Data</p>{{obj.data | date:"d/m/Y"}}</td>
+
+                                                {% if obj.status == 'INICIADA' %}
+                                                    <td class="alert alert-success">{{obj.status}}</td>
+                                                {% elif obj.status == 'AGUARDANDO' %}
+                                                    <td class="alert alert-primary">{{obj.status}}</td>
+                                                {% else %}
+                                                    <td class="alert alert-danger">{{obj.status}}</td>
+                                                {% endif %}
+
+                                                <td>
+                                                    <a class="btn btn-primary" href="{% url 'detalhesFila' fila.id %}" style="font-size: medium;">
+                                                        Detalhes<i class="fas fa-info" style="margin-left: 10px; font-size: 15px;"></i>
+                                                    </a>
+                                                </td>
+                                            {% endfor %}
+                                    </tbody>
+                                        {% endfor %}
+                                </table>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+
+{% block title %} MinhaVez {% endblock %}
+
+{% block corpo %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row card-body" style="padding-top: 20px;">
+                            <button type="button" class="btn btn-primary" style="font-size: medium;" data-toggle="modal" data-target="#exampleModal">
+                                Adicionar Cidadão<i class="fas fa-plus" style="font-size: 20px; margin-left: 15px;"></i>
+                            </button>
+                        </div>
+                        <div class="card-title alert alert-info" role="alert">
+                            <div class="form-inline">
+                                <div class="form-group mx-sm-3 mb-2">
+                                    <h1 style="font-size: xx-large;">Detalhes da Fila</h1>
+                                </div>
+                                <a href="{% url 'relatorioFila' %}" 
+                                    class="btn btn-dark" target="_new" style="font-size: medium; margin-left: auto;">
+                                    Relatório<i class="fas fa-file-pdf" style="margin-left: 15px; font-size: 20px;"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Vagas</th>
+                                        <th>Total de fichas</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <td>{{context.fila.nome}}</td>
+                                    <td>{{context.fila.vagas}}</td>
+                                    <td>{{context.fila.total_fichas}}</td>
+                                </tbody>
+                            </table>
+                        </div>
+                        {% if context.consulta %}
+                            <div class="form-group mx-sm-3 mb-2">
+                                <h7 style="font-size: xx-large; color: black;">Dados da Consulta</h7>
+                            </div>
+                        {% elif context.autorizacao %}
+                            <div class="form-group mx-sm-3 mb-2">
+                                <h7 style="font-size: xx-large; color: black;">Dados da Autorização</h7>
+                            </div>
+                        {% else %}
+                            <div class="form-group mx-sm-3 mb-2">
+                                <h7 style="font-size: xx-large; color: black;">Dados do Exame</h7>
+                            </div>
+                        {% endif %}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        {% if context.autorizacao %}
+                                            <th>Nome</th>
+                                            <th>Responsável</th>
+                                            <th>Data</th>
+                                            <th>Status</th>
+                                        {% elif context.consulta %}
+                                            <th>Nome</th>
+                                            <th>Especialista</th>
+                                            <th>Data</th>
+                                            <th>Status</th>
+                                        {% else %}
+                                            <th>Nome</th>
+                                            <th>Tipo</th>
+                                            <th>Data</th>
+                                            <th>Status</th>
+                                        {% endif %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if context.autorizacao %}
+                                        <td>{{context.autorizacao.nome}}</td>
+                                        <td>{{context.autorizacao.responsavel.nome}}
+                                            {{context.autorizacao.responsavel.sobrenome}}</td>
+                                        <td>{{context.autorizacao.data}}</td>
+                                        <td>{{context.autorizacao.status}}</td>
+                                        <td>
+                                            <a href="{% url 'detalhesAutorizacao' context.autorizacao.id %}"
+                                                class="btn btn-primary" style="font-size: medium;">
+                                                Detalhes<i class="fas fa-info" style="margin-left: 10px; font-size: 15px;"></i>
+                                            </a>
+                                        </td>
+                                    {% elif context.consulta %}
+                                        <td>{{context.consulta.nome}}</td>
+                                        <td>{{context.consulta.especialista.nome}}
+                                            {{context.consulta.especialista.sobrenome}}</td>
+                                        <td>{{context.consulta.data}}</td>
+                                        <td>{{context.consulta.status}}</td>
+                                        <td>
+                                            <a href="{% url 'detalhesConsulta' context.consulta.id %}"
+                                                class="btn btn-primary" style="font-size: medium;">
+                                                Detalhes<i class="fas fa-info" style="margin-left: 10px; font-size: 15px;"></i>
+                                            </a>
+                                        </td>
+                                    {% else %}
+                                        <td>{{context.exame.nome}}</td>
+                                        <td>{{context.exame.tipo}}</td>
+                                        <td>{{context.exame.data}}</td>
+                                        <td>{{context.exame.status}}</td>
+                                        <td>
+                                            <a href="{% url 'detalhesExame' context.exame.id %}"
+                                                class="btn btn-primary" style="font-size: medium;">
+                                                Detalhes<i class="fas fa-info" style="margin-left: 10px; font-size: 15px;"></i>
+                                            </a>
+                                        </td>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% if context.fichas.all %}
+                            <div class="card-title">
+                                <h4>Úsuarios para serem atendidos</h4>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Nome</th>
+                                            <th>Número da Fichas</th>
+                                            <th>Status da Ficha</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for ficha in context.fichas.all %}
+                                            <td>{{ficha.usuario.user.first_name}} {{ficha.usuario.user.last_name}}</td>
+                                            <td>{{ficha.numero}}</td>
+                                            {% if ficha.status == 'ATENDIDA' %}
+                                                <td class="alert alert-success">{{ficha.status}}</td>
+                                            {% elif ficha.status == 'AGUARDANDO' %}
+                                                <td class="alert alert-primary">{{ficha.status}}</td>
+                                            {% else %}
+                                                <td class="alert alert-danger">{{ficha.status}}</td>
+                                            {% endif %}
+                                            <td>
+                                                <a href="{% url 'detalhesUsuario' ficha.usuario.id context.fila.id %}"
+                                                    class="btn btn-primary" style="font-size: medium;">
+                                                    Detalhes<i class="fas fa-info" style="margin-left: 10px; font-size: 15px;"></i>
+                                                </a>
+                                            </td>
+                                            {% if ficha.status != 'ATENDIDA' %}
+                                                <td>
+                                                    <a href="{% url 'naoCompareceu' ficha.id %}" class="btn btn-danger" style="font-size: medium;">
+                                                        Não Compareceu<i class="far fa-times-circle" style="font-size: 20px; margin-left: 15px;"></i>
+                                                    </a>
+                                                </td>
+                                            {% endif %}
+                                    </tbody>
+                                        {% endfor %}
+                                </table>
+                            </div>
+                        {% endif %}
+                        <!-- MODAL CPF -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Adicionar Cidadão</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p class="modal-title" id="exampleModalLabel" style="font-size: 30px; color: black;">
+                                            ATENÇÃO<i class="fas fa-exclamation-triangle" style="font-size: 30px; color: red; padding-left: 20px;"></i>
+                                        </p>
+                                        <p>Você pretende adicionar um Cidadão nesta fila, mesmo sabendo dos riscos que podem acontecer ?</p>
+                                        </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Não</button>
+                                            <a href="{% url 'adicionarUsuarioFila' context.fila.id %}" class="btn btn-primary">Sim</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- FIM MODAL -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

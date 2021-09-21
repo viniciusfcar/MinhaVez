@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %} MinhaVez {% endblock %}
+
+{% block corpo %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        {% if context.msg_error %}
+                            <div class="alert alert-danger" role="alert">
+                                <h4 class="alert-heading">{{ context.msg_error }}</h4>
+                                <hr>
+                                <p>Verifique as filas iniciadas!</p>
+                            </div>
+                        {% else %}
+                            <div class="container-fluid mt-3">
+                                <div class="form-row text-center font-weight-bold gradient-4" role="alert" text-align="center">
+                                    <h3 class="alert col-md-12" style="color: white;">CONSULTAS EM AGUARDO</h3>           
+                                </div>
+                                <div class="row">
+                                    {% for consulta in context.consultas %}
+                                        <div class="card gradient-4" style="width: 12rem; margin-right: 10px; margin-left: 10px; margin-top: 20px;">
+                                            <div class="card-body row">
+                                                <a href="{% url 'detalhesConsulta' consulta.id %}" style="color: white; font-size: 20px;">{{consulta.nome}}</a>
+                                            </div>
+                                            <ul class="list-group list-group-flush">
+                                                <li class="list-group-item" style="color: black;">{{consulta.hora}}, {{consulta.data}}</li>
+                                                <li class="list-group-item" style="color: black; font-size: medium;">{{consulta.status}}</li>
+                                            </ul>
+                                            <div class="card-body">
+                                                <a href="{% url 'iniciarConsulta' consulta.id %}" class="btn btn-dark" style="font-size: medium;">
+                                                    Iniciar<i class="fas fa-play" style="font-size: 20px; margin-left: 15px;"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

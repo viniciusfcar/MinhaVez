@@ -1,0 +1,170 @@
+{% extends 'home.html' %}
+{% load bootstrap %}
+
+{% block title %} MinhaVez {% endblock %}
+
+{% block corpo %}
+
+<div class="container-fluid">
+    <input type="hidden" id="msg" value="{{ context.msg }}">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div>
+                            <h4>Dados da Unidade</h4>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" name="razao_social" class="form-control" value="{{ context.unidade.razao_social }}" placeholder="Razão Social" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row col-lg-2">
+                                <div class="form-group">
+                                    <input type="text" id="cep" name="cep" maxlength="9" value="{{ context.unidade.cep }}" class="form-control" placeholder="CEP" required>
+                                    <p>Dica: Apenas números</p>
+                                    <div style="display: none;" id="alert-4">
+                                        <p style="color: red;">*cep inválido</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" id="logradouro" name="logradouro" value="{{ context.unidade.logradouro }}" class="form-control" placeholder="Logradouro: Rua, Avenida, Travessa..." required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <input type="number" name="numero" class="form-control" value="{{ context.unidade.numero }}" placeholder="Número" required>
+                                        <p>Dica: Caso não possua número, coloque 0.</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" id="bairro" name="bairro" value="{{ context.unidade.bairro }}" class="form-control" placeholder="Bairro" required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" id="complemento" name="complemento" value="{{ context.unidade.complemento }}" class="form-control" placeholder="Complemento">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" id="cidade" name="cidade" value="{{ context.unidade.cidade }}" class="form-control" placeholder="Cidade" required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" id="estado" name="estado" value="{{ context.unidade.estado }}" class="form-control" placeholder="Estado" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <h4>Informações</h4>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" id="telefone" name="telefone" value="{{ context.unidade.telefone }}" class="form-control" placeholder="Celular" required>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <input class="form-control" id="email" type="text" name="email" value="{{ context.usuario.email }}" placeholder="E-mail" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <a href="{% url 'perfilUnidadeSaude' %}" class="btn btn-danger col-md-4">Cancelar</a>
+                                    <button type="submit" id="btn" class="btn btn-success col-md-6">Salvar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- MODAL -->
+                    <div class="modal fade" id="modalMsg" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <p class="modal-title" id="exampleModalLabel" style="font-size: 30px; color: black;">
+                                        ATENÇÃO<i class="fas fa-exclamation-triangle" style="font-size: 30px; color: green; padding-left: 20px;"></i>
+                                    </p>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" style="align-items: center;">
+                                    <p style="font-size: medium; color: black;">{{ context.msg }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- FIM MODAL -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+    $(document).ready(async function(){
+
+        if(msg.value){
+            $('#modalMsg').modal('show');
+        };
+        
+        $('#telefone').mask("(00) 00000-0000");
+
+        $('#cep').mask("00000-000");
+
+        $('#cep').on('change', async function(){
+            cep = $(this).val();
+            
+            let apiCall = await fetch('https://viacep.com.br/ws/'+cep+'/json/');
+            const endereco = await apiCall.json();
+
+            if(endereco.logradouro != undefined){
+
+                if(endereco.logradouro != "") {
+                    document.getElementById('logradouro').value = endereco.logradouro;
+                    $('#logradouro').prop("readonly", true);
+                }
+                
+                if(endereco.complemento != ""){
+                    document.getElementById('complemento').value = endereco.complemento;
+                    $('#complemento').prop("readonly", true);
+                }
+                
+                if(endereco.bairro != ""){
+                    document.getElementById('bairro').value = endereco.bairro;
+                    $('#bairro').prop("readonly", true);
+                }
+
+                if(endereco.localidade != ""){
+                    document.getElementById('cidade').value = endereco.localidade;
+                    $("#cidade").prop("readonly", true);
+                }
+
+                if(endereco.uf != ""){
+                    document.getElementById('estado').value = endereco.uf;
+                    $('#estado').prop("readonly", true);
+                }
+
+                document.getElementById('alert-4').style.display = "none";
+                document.getElementById("btn").disabled = false;
+
+            } else {
+                document.getElementById('alert-4').style.display = "block";
+                document.getElementById("btn").disabled = true;
+            }
+        });
+
+    });
+</script>
+{% endblock %}

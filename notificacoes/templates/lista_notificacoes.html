@@ -1,0 +1,81 @@
+{% extends 'base_usuario.html' %}
+{% load static %}
+{% load bootstrap %}
+
+{% block title %} MinhaVez {% endblock %}
+
+{% block corpo %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        {% if context.notificacoes %}
+                            <div class="card-title alert alert-info mt-5" role="alert">
+                                <div class="form-inline">
+                                    <div class="form-group mx-sm-3 mb-2">
+                                        <h1 style="font-size: xx-large;">Lista de Notificações</h1>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for notificacao in context.notificacoes %}
+                                            {% if notificacao.status == False %}
+                                                <form  method="post" enctype="multipart/form-data" id="form" action="{% url 'lerNotificacao' notificacao.id %}" method="POST">
+                                                    <input type="hidden" value="{{notificacao.id}}"/>
+                                                    {% csrf_token %}
+                                                    <div class="card w-75 alert alert-info" id="divId" data-toggle="tooltip" data-placement="right" title="Click para ler">
+                                                        <div class="card-body">
+                                                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="opcao1" checked>
+                                                            <h5 class="card-title">{{notificacao.titulo}}</h5>
+                                                            <p class="card-text">{{notificacao.assunto}}</p>
+                                                            <a href="{% url 'deleteNotificacao' notificacao.id %}" class="btn btn-danger">Excluir</a>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            {% else %} 
+                                                <div class="card w-75 alert alert-info" id="divId">
+                                                    <input type="hidden" value="{{notificacao.id}}"/>
+                                                    <div class="card-body">
+                                                        <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="opcao1" disabled>
+                                                        <h5 class="card-title">{{notificacao.titulo}}</h5>
+                                                        <p class="card-text">{{notificacao.assunto}}</p>
+                                                        <a href="{% url 'deleteNotificacao' notificacao.id %}" class="btn btn-danger">Excluir</a>
+                                                    </div>
+                                                </div>
+                                            {% endif %} 
+                                    </tbody>
+                                        {% endfor %}
+                                </table>
+                            </div>
+                        {% elif context.msg %}
+                            <div class="alert alert-danger" role="alert">
+                                <h4 class="alert-heading">{{ context.msg}}</h4>
+                                <hr>
+                                <p>Logo chegará novidades.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+    $(document).ready(async function(){
+        
+        $('#divId').click(function(){
+            $('#form').submit();
+        });
+    });
+</script>
+{% endblock %}

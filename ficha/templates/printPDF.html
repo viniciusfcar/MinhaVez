@@ -1,0 +1,95 @@
+{% load static %}
+{% load bootstrap %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+        <title>MinhaVez</title>
+    </head> 
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="col text-center">
+                                <img class="img-fluid" src="{% static 'midias_minhavez/isotipo.png' %}" style="width: 350px; height: 100px;">
+                            </div>
+                            <div class="card-title mt-5">
+                                {% if context.fila_normal %}
+                                    <h3 style="font-size: xx-large;">Comprovante de incrição da fila: {{ context.fila_normal.nome }}</h3>
+                                {% else %}
+                                    <h3 style="font-size: xx-large;">Comprovante de incrição da fila: {{ context.fila_preferencial.nome }}</h3>
+                                {% endif %}
+                            </div>
+                            <div class="alert alert-success form-row col-md-12" role="alert">
+                                <h3 class="col-md-8" style="font-size: xx-large;">Sua ficha é a #{{ context.ficha.numero }}</h3>          
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered zero-configuration">
+                                    <thead>
+                                        <tr>
+                                            <th>Nome</th>
+                                            <th>Sobrenome</th>
+                                            <th>CPF</th>
+                                            <th>RG</th>
+                                            <th>SUS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <td>{{ context.usuario.user.first_name }}</td>
+                                        <td>{{ context.usuario.user.last_name }}</td>
+                                        <td>{{ context.usuario.cpf }}</td>
+                                        <td>{{ context.usuario.rg }}</td>
+                                        <td>{{ context.usuario.sus }}</td>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="card-title">
+                                <h4>Dados da Fila</h4>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered zero-configuration">
+                                    <thead>
+                                        <tr>
+                                            <th>Nome</th>
+                                            <th>Preferencial</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% if fila_preferencial %}
+                                            <td>{{ context.fila_preferencial.nome }}</td>
+                                            <td>Sim</td>
+                                        {% else %}
+                                            <td>{{ context.fila_normal.nome }}</td>
+                                            <td>Não</td>
+                                        {% endif %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="card-title">
+                                <h4>Dados da Unidade de Saúde</h4>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered zero-configuration">
+                                    <thead>
+                                        <tr>
+                                            <th>Nome</th>
+                                            <th>E-mail</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <td>{{ context.unidade.razao_social }}</td>
+                                        <td>{{ context.unidade.email }}</td>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+    

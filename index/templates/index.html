@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+{% load bootstrap %}
+{% load static %}
+
+{% block title %} MinhaVez {% endblock %}
+
+{% block logo %}<a href="{% url 'index' %}">{% endblock %}
+
+{% block i_menu_superior %}
+    <li class="icons dropdown">
+        <span class="activity active"></span>
+        <p><a class="btn mb-1 btn-outline-primary btn-lg" href="{% url 'cadastroUsuario' %}">Cadastre-se</a></p>
+    </li>
+    <li class="icons dropdown">
+        <span class="activity active"></span>
+        <p><a class="btn mb-1 btn-outline-success btn-lg" href="{% url 'login' %}">Login</a></p>
+    </li>
+{% endblock %}
+
+{% block i_menu_lateral %}
+     <li>
+        <a href="{% url 'quemSomos' %}" aria-expanded="false">
+            <i class="icon-badge menu-icon"></i><span class="nav-text">Quem Somos</span>
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'contatos' %}">
+            <i class="icon-envelope menu-icon"></i><span class="nav-text">Contatos</span>
+        </a>
+    </li>
+{% endblock %}
+
+{% block corpo %}
+    <input type="hidden" id="msg" value="{{ msg }}">
+    <input type="hidden" id="msg_cadastro" value="{{ msg_cadastro }}">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card" style="background-color: #1E90FF;">
+                    <div class="card-body">
+                        <div class="row g-0">
+                            <div class="col-md-8">
+                                <div>
+                                    <h1 class="card-text">Seja bem-vindo ao MinhaVez - Sistema</h1>
+                                    <h4 class="card-text">O sistema que irá melhorar a sua vida para sempre.</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row g-0">
+                            <div class="col-md-2">
+                                <img src="{% static 'midias_minhavez/logo.png' %}" alt="Imagem responsiva" class="img-fluid">
+                            </div>
+                            <div class="col-md-10">
+                                <div class="card-body">
+                                    <p class="card-text" style="text-align: justify;">
+                                        O MinhaVez - Sistema, é um software que está trabalhando para
+                                        melhorar a saúde pública e privada do nosso País. </br></br>
+                                        As filas são problemas constantes nas Unidades de Saúde
+                                        dos nossos municípos, e esse Software veio para dar conforto e comodidade para você cidadão. 
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row g-0">
+                            <div class="col-md-10">
+                                <div class="card-header" style="background-color: #1E90FF;">
+                                    <h5>Barra Menu Superior</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text" style="text-align: justify;">
+                                        Acesse o Menu superior, entre no sistema utilizando seu login e marque já seu lugar na fila desejada.
+                                        </br></br>
+                                        Ainda não possue cadastro ? Realize agora mesmo o seu cadastro para poder aproveitar
+                                        o máximo que o MinhaVez - Sistema tem preparado para você. 
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <img src="{% static 'midias_minhavez/seta_cima.png' %}" alt="Imagem responsiva" class="img-fluid w-75 p-3">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row g-0">
+                            <div class="col-md-2">
+                                <img src="{% static 'midias_minhavez/seta_esquerda.png' %}" alt="Imagem responsiva" class="img-fluid w-75 p-3">
+                            </div>
+                            <div class="col-md-10">
+                                <div class="card-header" style="background-color: #1E90FF;">
+                                    <h5>Barra Menu Lateral</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text" style="text-align: justify;">
+                                        Acesse o Menu lateral e saíba quem somos nós, as pessoas e empresa por trás do MinhaVez - Sistema. </br></br>
+                                        Se necessário, poderá visualizar todos os nossos contatos e redes sociais. 
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- MODAL QUE É PARA QUANDO O USUÁRIO REALIZA O CADASTRO -->
+    <div class="modal fade" id="modalCadastro" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p class="modal-title" id="exampleModalLabel" style="font-size: 30px; color: black;">
+                        SUCESSO<i class="fas fa-exclamation-triangle" style="font-size: 30px; color: green; padding-left: 20px;"></i>
+                    </p>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p style="font-size: medium; color: black;">{{msg_cadastro}}</p>
+                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+            </div>
+            </div>
+        </div>
+    </div>
+    <!-- FIM MODAL -->
+
+    <!-- MODAL -->
+    <div class="modal fade" id="modalMsgSuccess" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p class="modal-title" id="exampleModalLabel" style="font-size: 30px; color: black;">
+                        SUCESSO<i class="fas fa-exclamation-triangle" style="font-size: 30px; color: green; padding-left: 20px;"></i>
+                    </p>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p style="font-size: medium; color: black;">Sua senha foi alterada, faça o login quando quiser.</p>
+                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+            </div>
+            </div>
+        </div>
+    </div>
+    <!-- FIM MODAL -->
+
+    <!-- MODAL -->
+    <div class="modal fade" id="modalMsgDanger" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p class="modal-title" id="exampleModalLabel" style="font-size: 30px; color: black;">
+                        Falha<i class="fas fa-exclamation-triangle" style="font-size: 30px; color: red; padding-left: 20px;"></i>
+                    </p>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p style="font-size: medium; color: black;">Solicite novamente a senha, aconteceu um erro interno.</p>
+                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+            </div>
+            </div>
+        </div>
+    </div>
+    <!-- FIM MODAL -->
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript">
+        $(document).ready(async function(){
+
+            if(msg.value == 'true'){
+                $('#modalMsgSuccess').modal('show');
+            } else if(msg.value == 'false') {
+                $('#modalMsgDanger').modal('show');
+            }
+
+            if(msg_cadastro.value) {
+                $('#modalCadastro').modal('show');
+            }     
+              
+        });
+    </script>
+{% endblock %}

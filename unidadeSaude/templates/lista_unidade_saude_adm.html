@@ -1,0 +1,35 @@
+{% extends 'base_adm.html' %}
+
+{% block title %} MinhaVez {% endblock %}
+
+{% block corpo %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h4>Lista das Unidades de Saúde</h4>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered zero-configuration">
+                                <thead>
+                                    <tr>
+                                        <th>Razão Social</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for unidade in unidades %}
+                                            <td>{{unidade.razao_social}}</td>
+                                            <td><a href="{% url 'detalhesUnidadeAdm' unidade.id %}" class="btn btn-primary">Detalhes</a></td>
+                                </tbody>
+                                    {% endfor %}
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

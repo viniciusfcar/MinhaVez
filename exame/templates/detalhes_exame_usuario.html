@@ -1,0 +1,99 @@
+{% extends 'base_usuario.html' %}
+
+{% block title %} MinhaVez {% endblock %}
+
+{% block corpo %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title alert alert-info mt-5" role="alert">
+                            <div class="form-inline">
+                                <div class="form-group mx-sm-3 mb-2">
+                                    <h1 style="font-size: xx-large;">Detalhes Exame: {{context.exame.nome}}</h1>
+                                </div>
+                                {% if context.exame.create_fila and context.exame.status != 'ENCERRADA' %}
+                                    <a href="{% url 'cadastroFichaExame' context.exame.id %}" class="btn btn-success" style="font-size: medium; margin-left: auto;">
+                                        Participar<i class="fas fa-check" style="font-size: 20px; margin-left: 15px;"></i> 
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered zero-configuration">
+                                <thead>
+                                    <tr>
+                                        <th>Tipo</th>
+                                        <th>Hora</th>
+                                        <th>Data</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <td>{{context.exame.tipo}}</td>
+                                    <td>{{context.exame.hora}}</td>
+                                    <td>{{context.exame.data}}</td>
+                                    {% if context.exame.status == 'INICIADA' %}
+                                        <td class="alert alert-success">{{context.exame.status}}</td>
+                                    {% elif context.exame.status == 'AGUARDANDO' %}
+                                        <td class="alert alert-primary">{{context.exame.status}}</td>
+                                    {% else %}
+                                        <td class="alert alert-danger">{{context.exame.status}}</td>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                            <div class="card-title alert alert-info mt-5" role="alert">
+                                <div class="form-inline">
+                                    <div class="form-group mx-sm-3 mb-2">
+                                        <h1 style="font-size: xx-large;">Dados da Unidade</h1>
+                                    </div>
+                                    <a href="{% url 'detalhesUnidadeSaude' context.unidade.id %}" 
+                                        class="btn btn-primary" style="font-size: medium; margin-left: auto;">
+                                        Detalhes<i class="fas fa-info" style="margin-left: 10px; font-size: 15px;"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Nome</th>
+                                            <th>E-mail</th>
+                                            <th>Telefone</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <td>{{context.unidade.razao_social}}</td>
+                                        <td>{{context.unidade.email}}</td>
+                                        <td>{{context.unidade.telefone}}</td>
+                                    </tbody>
+                                </table>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Logradouro</th>
+                                            <th>Número</th>
+                                            <th>Complemento</th>
+                                            <th>Bairro</th>
+                                            <th>Cidade</th>
+                                            <th>Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <td>{{context.unidade.logradouro}}</td>
+                                        <td>{{context.unidade.numero}}</td>
+                                        <td>{{context.unidade.complemento}}</td>
+                                        <td>{{context.unidade.bairro}}</td>
+                                        <td>{{context.unidade.cidade}}</td>
+                                        <td>{{context.unidade.estado}}</td>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

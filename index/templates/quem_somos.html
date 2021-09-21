@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load bootstrap %}
+
+{% block title %} MinhaVez {% endblock %}
+
+{% block logo %}<a href="{% url 'index' %}">{% endblock %}
+
+{% block i_menu_superior %}
+    <li class="icons dropdown d-none d-md-flex">
+        <span class="activity active"></span>
+        <p><a class="btn mb-1 btn-outline-primary btn-lg" href="{% url 'cadastroUsuario' %}">Cadastre-se</a></p>
+    </li>
+    <li class="icons dropdown d-none d-md-flex">
+        <span class="activity active"></span>
+        <p><a class="btn mb-1 btn-outline-success btn-lg" href="{% url 'login' %}">Login</a></p>
+    </li>
+{% endblock %}
+
+{% block i_menu_lateral %}
+     <li>
+        <a href="{% url 'quemSomos' %}" aria-expanded="false">
+            <i class="icon-badge menu-icon"></i><span class="nav-text">Quem Somos</span>
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'contatos' %}">
+            <i class="icon-envelope menu-icon"></i><span class="nav-text">Contatos</span>
+        </a>
+    </li>
+{% endblock %}
+
+{% block corpo %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div>
+                        <h1>Quem Somos ?</h1>
+                    </div>
+                    <div style="margin-top: 30px; text-align: justify;">
+                        A Minha Vez - Sistema é uma empresa focada no desenvolvimento de soluções para o sistema de saúde do País, tendo como diferencial a facilidade de uso de seus produtos.
+
+                        Formada por especialistas de larga vivência nas áreas de gestão do conhecimento, arquitetura da informação, usabilidade e soluções web, sua equipe conta com profissionais especializados em Python, JavaScript e React-Native, reconhecidos pelas comunidades de programadores de todo o mundo.
+
+                        Desde a especificação de um projeto até os ajustes finais de desempenho de um servidor, a Simples Consultoria possui expertise técnica e prática em todas as etapas necessárias para o desenvolvimento de projetos web para a sua empresa, de intranets a portais.  
+
+                        Em seu portfólio, após cinco anos de experiência no uso de Plone, contabiliza-se mais de 100 casos de sucesso na utilização da ferramenta, o que nos credencia como uma das maiores autoridades em Plone no Brasil e nos permite atuar em todas as fases de elaboração de um site ou intranet a partir desta tecnologia
+
+                        Além de todo o conhecimento específico, nossos serviços de consultoria e soluções de gestão de conteúdo alinham os objetivos da sua organização com a facilidade de uso em ambiente web. Isso resulta em uma combinação sob medida para sua corporação, com os profissionais da sua empresa receberão a capacitação técnica necessária para gerenciar de maneira autônoma o projeto.
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

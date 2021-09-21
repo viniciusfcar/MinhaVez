@@ -1,0 +1,96 @@
+{% extends 'base_usuario.html' %}
+
+{% block title %} MinhaVez {% endblock %}
+
+{% block corpo %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title">
+                            {% if context.fila_normal %}
+                                <h2>Comprovante de incrição da fila: {{ context.fila_normal.nome }}</h2>
+                            {% else %}
+                                <h2>Comprovante de incrição da fila: {{ context.fila_preferencial.nome }}</h2>
+                            {% endif %}
+                        </div>
+                        <div class="alert alert-success form-row col-md-12" role="alert">
+                            <h3 class="col-md-8">Sua ficha é a #{{ context.ficha.numero }}</h3>
+                            <a href="{% url 'deleteFicha' context.ficha.id %}" class="btn btn-danger col-md-2" style="font-size: medium;">
+                                Cancelar<i class="far fa-times-circle" style="font-size: 20px; margin-left: 15px;"></i>
+                            </a>           
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Sobrenome</th>
+                                        <th>CPF</th>
+                                        <th>RG</th>
+                                        <th>SUS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <td>{{ context.usuario.user.first_name }}</td>
+                                    <td>{{ context.usuario.user.last_name }}</td>
+                                    <td>{{ context.usuario.cpf }}</td>
+                                    <td>{{ context.usuario.rg }}</td>
+                                    <td>{{ context.usuario.sus }}</td>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="card-title">
+                            <h4>Dados da Fila</h4>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Preferencial</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if context.fila_preferencial %}
+                                        <td>{{ context.fila_preferencial.nome }}</td>
+                                        <td>Sim</td>
+                                    {% else %}
+                                        <td>{{ context.fila_normal.nome }}</td>
+                                        <td>Não</td>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="card-title">
+                            <h4>Dados da Unidade de Saúde</h4>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>E-mail</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <td>{{ context.unidade.razao_social }}</td>
+                                    <td>{{ context.unidade.email }}</td>
+                                    <td>
+                                        <a href="{% url 'detalhesUnidadeSaude' context.unidade.id %}" class="btn btn-primary" style="font-size: medium;">
+                                            Detalhes<i class="fas fa-info" style="margin-left: 10px; font-size: 15px;"></i>
+                                        </a>
+                                    </td>
+                                </tbody>
+                            </table>
+                        </div>
+                        <a class="btn btn-success" target="_new" href="{% url 'printPDF' %}" style="font-size: medium;">
+                            Salvar<i class="fas fa-download" style="font-size: 20px; margin-left: 15px;"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

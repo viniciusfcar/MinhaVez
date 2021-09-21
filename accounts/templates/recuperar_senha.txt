@@ -1,0 +1,15 @@
+
+Olá, {{ context.user.username }}!
+
+Recebemos uma solicitação para redefinir a senha de sua conta para este endereço de e-mail. 
+Para iniciar o processo de redefinição de senha de sua conta, clique no link abaixo:
+
+{{ context.domain }}{{ context.uid }}/{{ context.token }}
+
+Este link só pode ser usado uma vez. Se você precisar redefinir sua senha novamente, visite https://minhavezsistema.com.br/ e solicite outra redefinição.
+Se você não fez essa solicitação, pode simplesmente ignorar este e-mail.
+
+Atenciosamente,
+A equipe do MinhaVez Sistema
+
+*NÃO RESPONDA ESSE E-MAIL*

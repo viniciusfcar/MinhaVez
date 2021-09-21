@@ -1,0 +1,89 @@
+{% extends 'base_usuario.html' %}
+
+{% block title %} MinhaVez {% endblock %}
+
+{% block corpo %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        {% if context.msg_busca %}
+                            <div class="alert alert-danger" role="alert">
+                                <h4 class="alert-heading">{{ context.msg_busca}}</h4>
+                                <hr>
+                                <p>Realize busca válida!</p>
+                            </div>
+                        {% elif context.msg_error %}
+                            <div class="alert alert-danger" role="alert">
+                                <h4 class="alert-heading">{{ context.msg_error}}</h4>
+                                <hr>
+                            <p>Aguarde até que algum seja cadastrado!</p>
+                            </div>
+                        {% endif %}
+                        <div id=pesquisa class="alert alert-info" role="alert">
+                            <form class="form-inline" id="pai">
+                                <div class="form-group mx-sm-3 mb-2" id="pesquisa">
+                                    <input type="text" class="form-control" name="pesquisa" placeholder="Digite sua pesquisa aqui...">
+                                </div>
+                                <button type="submit" class="btn btn-dark col-md-2" style="font-size: medium;">
+                                    Pesquisar<i class="fas fa-search" style="font-size: 20px; margin-left: 15px;"></i>
+                                </button>
+                            </form>
+                        </div>
+                        {% if context.unidade %}
+                            <a class="btn btn-primary" href="{% url 'listaEspecialistasUnidade' context.unidade.id %}" style="font-size: medium;">
+                                Lista Completa<i class="fas fa-retweet" style="font-size: 20px; margin-left: 15px;"></i>
+                            </a>
+                        {% endif %}
+                        <div class="card-title alert alert-info mt-5" role="alert">
+                            <div class="form-inline">
+                                <div class="form-group mx-sm-3 mb-2">
+                                    <h1 style="font-size: xx-large;">Lista de Especialistas</h1>
+                                </div>
+                                <a href="{% url 'detalhesUnidadeSaude' context.unidade_aux.id %}" 
+                                    class="btn btn-dark col-md-2" style="font-size: medium; margin-left: auto;">
+                                    Unidade de Saúde<i class="fas fa-home" style="margin-left: 15px; font-size: 20px;"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Nome</th>
+                                        <th>Sobrenome</th>
+                                        <th>Profissão</th>
+                                        <th>Especialização</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for especialista in context.especialistas %}
+                                        <td>
+                                            <img class="img-circle float-left" style="height: 100px; width: 70px;" src="{{ especialista.imagem.url }}">
+                                        </td>
+                                        <td>{{especialista.nome}}</td>
+                                        <td>{{especialista.sobrenome}}</td>
+                                        <td>{{especialista.profissao}}</td>
+                                        <td>
+                                            {% for especializacao in especialista.especializacao.all %}
+                                                <li>{{especializacao.nome}}</li>
+                                            {% endfor %}
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'detalhesEspecialistaUsuario' especialista.id %}" class="btn btn-primary" style="font-size: medium;">
+                                                Detalhes <i class="fas fa-info" style="margin-left: 10px; font-size: 15px;"></i>
+                                            </a>
+                                        </td>
+                                </tbody>
+                                    {% endfor %}
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

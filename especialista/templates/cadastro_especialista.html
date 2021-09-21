@@ -1,0 +1,220 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap %}
+
+{% block title %} MinhaVez {% endblock %}
+
+{% block corpo %}
+
+<div class="container-fluid">
+    <input type="hidden" id="msg" value="{{ context.msg_error }}">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-row">
+                            <div class="col-lg-6 form-group">
+                                <div class="custom-file form-group">
+                                    {{context.form.imagem|bootstrap}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="forma-group col-md-2" style="font-size: medium;">
+                                <label for="conselho">Conselho</label>
+                                <select name="conselho" class="form-control" id="conselho" required>
+                                    <option  value="{{ context.especialista.conselho }}">{{ context.especialista.conselho }}</option>
+                                    <option value="COREN">COREN</option>
+                                    <option value="CRM">CRM</option>
+                                    <option value="CRO">CRO</option>
+                                    <option value="CRN">CRN</option>
+                                    <option value="CREFITO">CREFITO</option>
+                                    <option value="CRFa">CRFa</option>
+                                    <option value="CRP">CRP</option>
+                                </select>
+                            </div>
+                            <div class="forma-group col-md-2" style="font-size: medium;">
+                                <label for="estadoConselho">Estado do Conselho</label>
+                                <select name="estado_conselho" class="form-control" id="estado_conselho" required>
+                                    <option  value="{{ context.especialista.estado_conselho }}">{{ context.especialista.estado_conselho }}</option>
+                                    <option value="AC">AC</option>
+                                    <option value="AL">AL</option>
+                                    <option value="AP">AP</option>
+                                    <option value="AM">AM</option>
+                                    <option value="BA">BA</option>
+                                    <option value="CE">CE</option>
+                                    <option value="ES">ES</option>
+                                    <option value="GO">GO</option>
+                                    <option value="MA">MA</option>
+                                    <option value="MT">MT</option>
+                                    <option value="MS">MS</option>
+                                    <option value="PA">PA</option>
+                                    <option value="PB">PB</option>
+                                    <option value="PR">PR</option>
+                                    <option value="PE">PE</option>
+                                    <option value="PI">PI</option>
+                                    <option value="RJ">RJ</option>
+                                    <option value="RN">RN</option>
+                                    <option value="RS">RS</option>
+                                    <option value="RO">RO</option>
+                                    <option value="RR">RR</option>
+                                    <option value="SC">SC</option>
+                                    <option value="SP">SP</option>
+                                    <option value="SE">SE</option>
+                                    <option value="TO">TO</option>
+                                    <option value="DF">DF</option>
+                                </select>
+                            </div>
+                            <div class="forma-group col-md-3" style="font-size: medium;">
+                                <label>Nº do Conselho</label>
+                                <input type="text" class="form-control" id="num_conselho" value="{{ context.especialista.num_conselho }}" name="num_conselho" required>
+                            </div>
+                        </div>
+                        <div class="forma-group" style="margin-top: 17px;">
+                            {{ context.form.nome|bootstrap }}
+                        </div>
+                        <div class="forma-group">
+                            {{ context.form.sobrenome|bootstrap }}
+                        </div>
+                        <div class="form-row">
+                            <div class="forma-group col-md-5">
+                                {{ context.form.profissao|bootstrap }}
+                            </div>
+                            <div class="forma-group col-md-3" style="font-size: medium;">
+                                <label>Especialização</label>
+                                <select id="select-list" name="especializacao[]" style="width: 175%;" multiple class="form-control" required>
+                                    {% for especializacao in context.especializacoes %}
+                                        <option value="{{ especializacao.id}}">{{ especializacao.nome }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div> 
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <a href="{% url 'homeUnidadeSaude' %}" class="btn btn-danger col-md-4" style="font-size: medium;">
+                                   <span class="nav-text" style="font-size: medium;">Cancelar</span><i class="far fa-times-circle" style="font-size: 20px; margin-left: 15px;"></i>
+                                </a>
+                                <button type="submit" class="btn btn-success col-md-6" style="font-size: medium;">
+                                    Cadastrar<i class="fas fa-check" style="font-size: 20px; margin-left: 15px;"></i>
+                                </button> 
+                            </div>
+                        </div>
+                    </form>
+                    <!-- MODAL -->
+                    <div class="modal fade" id="modalEsp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <p class="modal-title" id="exampleModalLabel" style="font-size: 30px; color: black;">
+                                        ATENÇÃO<i class="fas fa-exclamation-triangle" style="font-size: 30px; color: red; padding-left: 20px;"></i>
+                                    </p>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" style="align-items: center;">
+                                    <p style="font-size: medium; color: black;">Especialistas já cadastrado no sistema:</p>
+                                    <p id="nome_esp" value="" style="font-size: x-large; color: black;" class="forma-group"></p>
+                                    <p style="font-size: medium; color: black;">Deseja cadastrar com as informações existentes ?</p>
+                                </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal" style="font-size: medium;">
+                                    Não<i class="far fa-times-circle" style="font-size: 20px; margin-left: 15px;"></i>
+                                </button>
+                                <form method="post" enctype="multipart/form-data" action="{% url 'vinculaEspecialistaUnidade' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" id="id_especialista" name="id_especialista" value="">
+                                    <button id="url_cod" class="btn btn-success" style="font-size: medium; color: white;">
+                                        Sim<i class="fas fa-check" style="font-size: 20px; margin-left: 15px;"></i>
+                                    </button>
+                                </form>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                <!-- FIM MODAL -->
+                <!-- MODAL -->
+                <div class="modal fade" id="modalMsg" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <p class="modal-title" id="exampleModalLabel" style="font-size: 30px; color: black;">
+                                    ATENÇÃO<i class="fas fa-exclamation-triangle" style="font-size: 30px; color: red; padding-left: 20px;"></i>
+                                </p>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p style="font-size: x-large; color: black;">{{ context.msg_error }}</p>
+                                <p style="font-size: medium; color: black;">Conselho, Nº do conselho, Profissão e Especialização</p>
+                                <p style="font-size: small; color: red;">*Faça a importação ou mude algum desses dados</p>
+                                <p style="font-size: small; color: red;">*Não coloque informações incorretas</p>
+                            </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- FIM MODAL -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+    $(document).ready(async function(){
+        
+        var conselho = null;
+        var num_conselho = null;
+        var estado_conselho = null;
+        var busca = null;
+        
+        $('#select-list').select2({
+            tags: true,
+        });
+
+        if(msg.value){
+            $('#modalMsg').modal('show');
+        };     
+
+        $('#conselho').on('change', function(){
+            conselho = $(this).val();
+        });
+
+        $('#estado_conselho').on('change', function(){
+            estado_conselho = $(this).val();
+        });
+
+        $('#num_conselho').on('change', async function(){
+            num_conselho = $(this).val();
+
+            if(num_conselho != null && conselho!= null) {
+                let apiCall = await fetch('https://minhavezsistema.com.br/api/especialista/consultaEspecialista/?num_conselho='+num_conselho+'&conselho='+conselho+'&estado_conselho='+estado_conselho);
+                const esp = await apiCall.json();
+                
+                let apiCall2 = await fetch('https://minhavezsistema.com.br/api/especializacao/' + esp[0].fields.especializacao + '/');
+                let especi = await apiCall2.json();
+
+                let apiCall3 = await fetch('https://minhavezsistema.com.br/api/profissao/' + esp[0].fields.profissao + '/')
+                let prof = await apiCall3.json();
+
+                if(apiCall.status == 200) {
+                    document.getElementById('nome_esp').textContent  = esp[0].fields.nome + " " + esp[0].fields.sobrenome + ", " + 
+                    prof.nome + ", " + especi.nome;
+                    
+                    document.getElementById('id_especialista').value = esp[0].pk;
+                    
+                    $('#modalEsp').modal('show');
+                };                                                                                                                                                                    
+            }         
+        });  
+    });
+</script>
+{% endblock %}

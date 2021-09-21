@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+{% load bootstrap %}
+
+{% block title %} MinhaVez {% endblock %}
+
+{% block corpo %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        {% if context.msg_busca %}
+                            <div class="alert alert-danger" role="alert">
+                                <h4 class="alert-heading">{{ context.msg_busca}}</h4>
+                                <hr>
+                                <p>Realize busca válida!</p>
+                            </div>
+                        {% endif %}
+                        <div class="alert alert-info form-row" role="alert">
+                            <div class="form-group col-md-4">
+                                <label class="card-title">Especialista</label>
+                                <form class="form-inline" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <select id="select-list" name="especialista" class="form-control col-md-8" required>
+                                        <option value="{{ context.especialista.id }}">{{context.especialista.nome}}</option>
+                                        {% for esp in context.especialistas.all %}
+                                            <option value="{{ esp.id }}">{{esp.nome}} - {{esp.profissao}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <button type="submit" class="btn btn-dark" style="font-size: medium; margin-left: 3%;">
+                                        <i class="fas fa-search" style="font-size: 20px;"></i>
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label class="card-title">Responsável</label>
+                                <form class="form-inline" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <select id="select-list" name="responsavel" class="form-control col-md-8" required>
+                                        <option value="{{ context.responsavel.id }}">{{context.responsavel.nome}}</option>
+                                        {% for resp in context.responsaveis.all %}
+                                            <option value="{{ resp.id }}">{{resp.nome}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <button type="submit" class="btn btn-dark" style="font-size: medium; margin-left: 3%;">
+                                        <i class="fas fa-search" style="font-size: 20px;"></i>
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label class="card-title">Exames</label>
+                                <form class="form-inline" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <select id="select-list" name="exames" class="form-control col-md-8" required>
+                                        <option value="{{ context.exames }}">{{context.exames}}</option>
+                                        <option value="Exames">Exames</option>
+                                    </select>
+                                    <button type="submit" class="btn btn-dark" style="font-size: medium; margin-left: 3%;">
+                                        <i class="fas fa-search" style="font-size: 20px;"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        {% if context.msg_alert %}
+                            <div class="alert alert-danger" role="alert">
+                                <h4 class="alert-heading">{{ context.msg_alert }}</h4>
+                                <hr>
+                                <p>Realize cadastro de algum Agendamento para poder visualizar!</p>
+                            </div>
+                        {% endif %}
+
+                        {% if context.msg_alert2 %}
+                            <div class="card-title alert alert-info" role="alert" style="margin-top: 30px;">
+                                <form class="form-inline" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    {% if context.especialista %}
+                                        <input type="hidden" value="{{context.especialista.id}}" name="especialista"/>
+                                    {% elif context.responsavel %}
+                                        <input type="hidden" value="{{context.responsavel.id}}" name="responsavel"/>
+                                    {% elif context.exames %}
+                                        <input type="hidden" value="{{context.exames}}" name="exames"/>
+                                    {% endif %}
+                                    <div class="form-group mx-sm-3 mb-2">
+                                        <input type="date" class="form-control" name="data" placeholder="Data..." required>
+                                    </div>
+                                    <p>até</p>
+                                    <div class="form-group mx-sm-3 mb-2">
+                                        <input type="date" class="form-control" name="dataFinal" placeholder="Data..." required>
+                                    </div>
+                                    <button type="submit" class="btn btn-dark" style="font-size: medium;">
+                                        <i class="fas fa-search" style="font-size: 20px;"></i>
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="alert alert-danger" role="alert">
+                                <h4 class="alert-heading">{{ context.msg_alert2 }}</h4>
+                                <hr>
+                                <p>Realize cadastro de algum Agendamento para poder visualizar!</p>
+                            </div>
+                        {% elif context.objetos %}
+                            <div class="card-title alert alert-info" role="alert" style="margin-top: 30px;">
+                                <div class="form-inline">
+                                    <div class="form-group mx-sm-3 mb-2">
+                                        <h1 style="font-size: xx-large;">Lista de Agendamentos</h1>
+                                    </div>
+                                    <a href="{% url 'relatorioListaAgendamento' %}" 
+                                        class="btn btn-dark" target="_new" style="font-size: medium; margin-left: auto;">
+                                        Relatório<i class="fas fa-file-pdf" style="margin-left: 15px; font-size: 20px;"></i>
+                                    </a>
+                                </div>
+                                <div>
+                                    <form class="form-inline" method="POST" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        {% if context.especialista %}
+                                            <input type="hidden" value="{{context.especialista.id}}" name="especialista"/>
+                                        {% elif context.responsavel %}
+                                            <input type="hidden" value="{{context.responsavel.id}}" name="responsavel"/>
+                                        {% elif context.exames %}
+                                            <input type="hidden" value="{{context.exames}}" name="exames"/>
+                                        {% endif %}
+                                        <div class="form-group mx-sm-3 mb-2">
+                                            <input type="date" class="form-control" name="data" placeholder="Data..." required>
+                                        </div>
+                                        <p>até</p>
+                                        <div class="form-group mx-sm-3 mb-2">
+                                            <input type="date" class="form-control" name="dataFinal" placeholder="Data..." required>
+                                        </div>
+                                        <button type="submit" class="btn btn-dark" style="font-size: medium;">
+                                            <i class="fas fa-search" style="font-size: 20px;"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Nome</th>
+                                            <th>Vagas</th>
+                                            <th>Hora</th>
+                                            <th>Data</th>
+                                            <th>Status</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for obj in context.objetos.all %}
+                                        <td>{{obj.agendamento.nome}}</td>
+                                        <td>{{obj.agendamento.vagas}}</td>
+                                        <td>{{obj.hora}}</td>
+                                        <td>{{obj.data | date:"d/m/Y"}}</td>
+                                        
+                                        {% if obj.status == 'INICIADA' %}
+                                            <td class="alert alert-success">{{obj.status}}</td>
+                                        {% elif obj.status == 'AGUARDANDO' %}
+                                            <td class="alert alert-primary">{{obj.status}}</td>
+                                        {% else %}
+                                            <td class="alert alert-danger">{{obj.status}}</td>
+                                        {% endif %}
+
+                                        <td>
+                                            <a href="{% url 'detalhesAgendamento' obj.agendamento.id %}" 
+                                                class="btn btn-primary" style="font-size: medium;">
+                                                Detalhes<i class="fas fa-info" style="margin-left: 10px; font-size: 15px;"></i>
+                                            </a>
+                                        </td>                            
+                                    </tbody>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

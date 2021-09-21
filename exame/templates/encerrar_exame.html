@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %} MinhaVez {% endblock %}
+
+{% block corpo %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="alert alert-danger" role="alert">
+                            <h3 class="alert-heading">ATENÇÃO!</h3>
+                            <hr>
+                            <p>Tem certeza que deseja encerrar o Exame: {{ exame.nome }} ?</p>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <form method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <a href="{% url 'detalhesExame' exame.id %}" class="btn btn-danger">Cancelar</a>
+                                    <button type="submit" class="btn btn-success">Confirmar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %} MinhaVez {% endblock %}
+
+{% block corpo %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="alert alert-danger" role="alert">
+                            <h3 class="alert-heading">ATENÇÃO!</h3>
+                            <hr>
+                            <p>Tem certeza que deseja excluir o Responsavel {{ nome }} ?</p>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <form method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <a href="{% url 'listaResponsavel' %}" class="btn btn-danger" style="font-size: medium;">
+                                        <span class="nav-text" style="font-size: medium;">Cancelar</span><i class="far fa-times-circle" style="font-size: 20px; margin-left: 15px;"></i>
+                                    </a>
+                                    <button type="submit" class="btn btn-success" style="font-size: medium;">
+                                        Confirmar<i class="fas fa-check" style="font-size: 20px; margin-left: 15px;"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
